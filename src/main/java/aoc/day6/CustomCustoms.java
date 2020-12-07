@@ -6,36 +6,71 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class CustomCustoms {
 
     public static void main(String[] args) throws IOException {
-        String[][] data = readFromFilePart1("src/main/java/aoc/day6/test.txt");
-        //System.out.println(Arrays.deepToString(data));
-        //System.out.println(countAnswers(data));
-        System.out.println(sumOfCounts(countAnswers(data)));
+        final String path = "src/main/java/aoc/day6/group-answers.txt";
+        String[] data1 = readFromFilePart1(path);
+        System.out.println(sumOfCounts(data1));
+
+        String[] data2 = readFromFilePart2(path);
+        System.out.println(sumOfCountsEveryone(data2));
     }
 
-    static int sumOfCounts(List<Set<Character>> counts) {
-        return counts.stream()
+    // Part 1
+    static int sumOfCounts(String[] groupAnswers) {
+        return countAnswers(groupAnswers).stream()
                 .map(Set::size)
                 .reduce(0, Integer::sum);
     }
 
-    static List<Set<Character>> countAnswers(String[][] groupAnswers) {
+    private static List<Set<Character>> countAnswers(String[] groupAnswers) {
         return Arrays.stream(groupAnswers)
-                .map(array -> Arrays.stream(array)
-                    .flatMap(s -> s.chars().mapToObj(c -> (char) c))
+                .map(s -> s.chars().mapToObj(c -> (char) c)
                     .collect(Collectors.toUnmodifiableSet()))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private static String[][] readFromFilePart1(String path) throws IOException {
+    // Part 2
+    static int sumOfCountsEveryone(String[] lines) {
+        return Arrays.stream(lines)
+                .parallel()
+                .map(CustomCustoms::mapToIntersectingAnswers)
+                .map(String::length)
+                .reduce(0, Integer::sum, Integer::sum);
+    }
+
+    private static String mapToIntersectingAnswers(String line) {
+        return Arrays.stream(line.split("-"))
+                .reduce(CustomCustoms::intersectingAnswers)
+                .orElse("");
+    }
+
+    private static String intersectingAnswers(String s1, String s2) {
+        return s1.chars()
+                .filter(c -> s2.indexOf(c) != -1)
+                .mapToObj(c -> (char) c)
+                .collect(Collector.of(
+                        StringBuilder::new,
+                        StringBuilder::append,
+                        StringBuilder::append,
+                        StringBuilder::toString));
+    }
+
+    private static String[] readFromFilePart1(String path) throws IOException {
         final String data = Files.readString(Path.of(path));
         return Arrays.stream(data.split("\n\n"))
                 .map(s -> s.replace("\n", ""))
-                .map(s -> s.split(" "))
-                .toArray(String[][]::new);
+                .toArray(String[]::new);
+    }
+
+    private static String[] readFromFilePart2(String path) throws IOException {
+        final String data = Files.readString(Path.of(path));
+        return Arrays.stream(data.split("\n\n"))
+                .map(s -> s.replace("\n", "-"))
+                .toArray(String[]::new);
     }
 }

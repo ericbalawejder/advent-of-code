@@ -35,21 +35,20 @@ public class CustomCustoms {
     }
 
     // Part 2
-    static int sumOfCountsEveryone(String[] lines) {
-        return Arrays.stream(lines)
-                .parallel()
-                .map(CustomCustoms::mapToIntersectingAnswers)
+    static int sumOfCountsEveryone(String[] groupAnswers) {
+        return Arrays.stream(groupAnswers)
+                .map(CustomCustoms::intersectingAnswers)
                 .map(String::length)
-                .reduce(0, Integer::sum, Integer::sum);
+                .reduce(0, Integer::sum);
     }
 
-    private static String mapToIntersectingAnswers(String line) {
-        return Arrays.stream(line.split("-"))
-                .reduce(CustomCustoms::intersectingAnswers)
+    private static String intersectingAnswers(String group) {
+        return Arrays.stream(group.split("-"))
+                .reduce(CustomCustoms::intersection)
                 .orElse("");
     }
 
-    private static String intersectingAnswers(String s1, String s2) {
+    private static String intersection(String s1, String s2) {
         return s1.chars()
                 .filter(c -> s2.indexOf(c) != -1)
                 .mapToObj(c -> (char) c)

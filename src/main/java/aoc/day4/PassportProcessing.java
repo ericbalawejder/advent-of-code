@@ -21,40 +21,39 @@ class PassportProcessing {
     );
 
     public static void main(String[] args) throws IOException {
-        PassportProcessing passportProcessing = new PassportProcessing();
-        String[][] passports = passportProcessing.readFromFile(
+        String[][] passports = readFromFile(
                 "src/main/java/aoc/day4/passport-data.txt");
-        System.out.println(passportProcessing.verifyPassportPart1(passports));
-        System.out.println(passportProcessing.verifyPassportPart2(passports));
+        System.out.println(verifyPassportPart1(passports));
+        System.out.println(verifyPassportPart2(passports));
     }
 
-    long verifyPassportPart1(String[][] passports) {
+    static long verifyPassportPart1(String[][] passports) {
         return Arrays.stream(passports)
-                .filter(this::isPresent)
+                .filter(PassportProcessing::isPresent)
                 .count();
     }
 
-    long verifyPassportPart2(String[][] passports) {
+    static long verifyPassportPart2(String[][] passports) {
         return Arrays.stream(passports)
-                .filter(this::isPresentAndValid)
+                .filter(PassportProcessing::isPresentAndValid)
                 .count();
     }
 
-    private boolean isPresent(String[] passport){
+    private static boolean isPresent(String[] passport){
         return Arrays.stream(passport)
                 .map(s -> s.substring(0, 3))
                 .collect(Collectors.toUnmodifiableSet())
                 .containsAll(PASSPORT_POLICY.keySet());
     }
 
-    private boolean isPresentAndValid(String[] passport){
+    private static boolean isPresentAndValid(String[] passport){
         return isPresent(passport) &&
                 Arrays.stream(passport)
                 .map(s -> s.split(":"))
                 .allMatch(s -> matchesRegex(s[0], s[1]));
     }
 
-    private boolean matchesRegex(String key, String value){
+    private static boolean matchesRegex(String key, String value){
         if(!PASSPORT_POLICY.containsKey(key)) { // ¯\_(ツ)_/¯ handles cid
             return true;
         }
@@ -62,7 +61,7 @@ class PassportProcessing {
         return pattern.matcher(value).matches();
     }
 
-    private String[][] readFromFile(String path) throws IOException {
+    private static String[][] readFromFile(String path) throws IOException {
         final String data = Files.readString(Path.of(path));
         return Arrays.stream(data.split("\n\n"))
                 .map(s -> s.replace("\n", " "))

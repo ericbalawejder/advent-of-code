@@ -4,20 +4,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PolicyValidator {
+public class PolicyValidatorPart1 {
 
     public static void main(String[] args) {
-        PolicyValidator policyValidator = new PolicyValidator();
-        final List<String> input = policyValidator.readFromFile("src/main/java/aoc/day2/passwords.txt");
-        System.out.println(policyValidator.passwordValidator(input).size());
+        final List<String> input = readFromFile("src/main/java/aoc/day2/passwords.txt");
+        System.out.println(passwordValidator(input).size());
     }
 
-    List<String> passwordValidator(List<String> input) {
+    static List<String> passwordValidator(List<String> input) {
         final List<String> validPasswords = new ArrayList<>();
         for (String policy : input) {
             final String[] tuple = policy.split(" ");
@@ -30,10 +28,10 @@ public class PolicyValidator {
                 validPasswords.add(policy);
             }
         }
-        return Collections.unmodifiableList(validPasswords);
+        return List.copyOf(validPasswords);
     }
 
-    private boolean isValid(long min, long max, char character, String password) {
+    private static boolean isValid(long min, long max, char character, String password) {
         final long count = password.chars()
                 .filter(c -> c == character)
                 .count();
@@ -41,17 +39,13 @@ public class PolicyValidator {
         return count >= min && count <= max;
     }
 
-    // https://stackabuse.com/java-read-a-file-into-an-arraylist/
-    private List<String> readFromFile(String path) {
-        List<String> list = new ArrayList<>();
-
-        // Using try-with-resources so the stream closes automatically
+    private static List<String> readFromFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            list = stream.collect(Collectors.toCollection(ArrayList::new));
+            return stream.collect(Collectors.toCollection(ArrayList::new));
         }
         catch (IOException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-        return Collections.unmodifiableList(list);
     }
 }

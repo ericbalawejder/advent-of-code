@@ -15,26 +15,26 @@ import java.util.stream.Stream;
 
 public class HandyHaversacks {
 
-    private static Map<String, String> bagMap;
+    private static Map<String, String> BAG_MAP;
 
     public static void main(String[] args) throws IOException {
-        bagMap = readFromFileToMap("src/main/java/aoc/day7/bag-rules.txt");
-        //System.out.println(bagMap);
-
+        BAG_MAP = readFromFileToMap("src/main/java/aoc/day7/bag-rules.txt");
         System.out.println(containsShinyGold());
-        //System.out.println(countChildBags("shiny gold"));
+        System.out.println(countChildBags("shiny gold"));
     }
 
     static long containsShinyGold() {
-        return bagMap.keySet()
+        return BAG_MAP.keySet()
                 .stream()
                 .filter(HandyHaversacks::containsShinyGold)
                 .count();
     }
 
-    static int countChildBags(String startBag) {
-        String content = bagMap.get(startBag);
-        Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)").matcher(content);
+    static int countChildBags(String bagColor) {
+        final String bagContent = BAG_MAP.get(bagColor);
+        final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
+                .matcher(bagContent);
+        
         int count = 0;
         while (matcher.find()) {
             int amount = Integer.parseInt(matcher.group(1));
@@ -45,7 +45,7 @@ public class HandyHaversacks {
     }
 
     private static boolean containsShinyGold(String parentBag) {
-        final String bagContent = bagMap.get(parentBag);
+        final String bagContent = BAG_MAP.get(parentBag);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
 
@@ -60,8 +60,8 @@ public class HandyHaversacks {
                 .anyMatch(HandyHaversacks::containsShinyGold);
     }
 
-    private static String parentBag(String s) {
-        Matcher matcher = Pattern.compile("^(\\w+\\s\\w+)").matcher(s);
+    private static String parentBag(String bagRule) {
+        final Matcher matcher = Pattern.compile("^(\\w+\\s\\w+)").matcher(bagRule);
         matcher.find();
         return matcher.group(0);
     }

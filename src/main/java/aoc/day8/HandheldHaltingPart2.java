@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,7 +20,7 @@ public class HandheldHaltingPart2 {
         System.out.println(mutateInstructions(instructions));
     }
 
-    static long mutateInstructions(List<String> instructions) {
+    static Optional<Long> mutateInstructions(List<String> instructions) {
         boolean endOfFile;
 
         for (int i = 0; i < instructions.size(); i++) {
@@ -29,17 +30,17 @@ public class HandheldHaltingPart2 {
                 modifiedInstructions.set(i, instruction.replace("nop", "jmp"));
                 endOfFile = parseInstruction(modifiedInstructions);
                 if (endOfFile) {
-                    return ACCUMULATOR;
+                    return Optional.of(ACCUMULATOR);
                 }
             } else if (instruction.startsWith("jmp")) {
                 modifiedInstructions.set(i, instruction.replace("jmp", "nop"));
                 endOfFile = parseInstruction(modifiedInstructions);
                 if (endOfFile) {
-                    return ACCUMULATOR;
+                    return Optional.of(ACCUMULATOR);
                 }
             }
         }
-        return 0;
+        return Optional.empty();
     }
 
     static boolean parseInstruction(List<String> instructions) {

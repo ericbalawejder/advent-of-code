@@ -34,7 +34,7 @@ public class HandyHaversacks {
         final String bagContent = BAG_MAP.get(bagColor);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
-        
+
         int count = 0;
         while (matcher.find()) {
             int amount = Integer.parseInt(matcher.group(1));

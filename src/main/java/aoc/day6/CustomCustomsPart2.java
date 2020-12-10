@@ -4,38 +4,47 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.stream.Collector;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CustomCustomsPart2 {
 
     public static void main(String[] args) throws IOException {
         final String path = "src/main/java/aoc/day6/group-answers.txt";
-        String[] data = readFromFile(path);
-        System.out.println(sumOfCountsEveryone(data));
+        String[] answers = readFromFile(path);
+        System.out.println(calculateAnyone(answers));
+        System.out.println(calculateEveryone(answers));
     }
 
-    static int sumOfCountsEveryone(String[] groupAnswers) {
-        return Arrays.stream(groupAnswers)
-                .map(CustomCustomsPart2::intersectingAnswers)
-                .map(String::length)
-                .reduce(0, Integer::sum);
+    private static long calculateAnyone(String[] groupAnswers) throws IOException {
+        return Stream.of(groupAnswers)
+                .map(s -> s.replaceAll("-", ""))
+                .mapToLong(s -> s.chars().distinct().count())
+                .sum();
     }
 
-    private static String intersectingAnswers(String group) {
-        return Arrays.stream(group.split("-"))
-                .reduce(CustomCustomsPart2::intersection)
-                .orElse("");
+    private static long calculateEveryone(String[] groupAnswers) throws IOException {
+        return Stream.of(groupAnswers)
+                .mapToLong(CustomCustomsPart2::countAnswerByGroup)
+                .sum();
     }
 
-    private static String intersection(String s1, String s2) {
-        return s1.chars()
-                .filter(c -> s2.indexOf(c) != -1)
-                .mapToObj(c -> (char) c)
-                .collect(Collector.of(
-                        StringBuilder::new,
-                        StringBuilder::append,
-                        StringBuilder::append,
-                        StringBuilder::toString));
+    private static long countAnswerByGroup(String answers) {
+        final List<String> groupAnswers = List.of(answers.split("-"));
+        final Set<Integer> answeredByEveryone = groupAnswers.get(0)
+                .chars()
+                .boxed()
+                .collect(Collectors.toSet());
+
+        groupAnswers.stream()
+                .map(individualAnswer -> individualAnswer.chars()
+                        .boxed()
+                        .collect(Collectors.toSet()))
+                .forEach(answeredByEveryone::retainAll);
+
+        return answeredByEveryone.size();
     }
 
     private static String[] readFromFile(String path) throws IOException {

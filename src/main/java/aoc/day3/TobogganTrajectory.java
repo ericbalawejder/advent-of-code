@@ -33,7 +33,7 @@ public class TobogganTrajectory {
     static long productOfTobogganTrajectories(int[][] grid, List<List<Integer>> slopes) {
         return slopes.stream()
                 .map(slope -> countTrees(grid, slope.get(0), slope.get(1)))
-                .reduce(1L, (a, b) -> a * b);
+                .reduce(1L, Math::multiplyExact);
     }
 
     private static int[][] readFromFile(String path) {

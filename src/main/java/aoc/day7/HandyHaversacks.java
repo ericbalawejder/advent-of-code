@@ -15,23 +15,23 @@ import java.util.stream.Stream;
 
 public class HandyHaversacks {
 
-    private static Map<String, String> BAG_MAP;
+    private static Map<String, String> bagMap;
 
     public static void main(String[] args) throws IOException {
-        BAG_MAP = readFromFileToMap("src/main/java/aoc/day7/bag-rules.txt");
+        bagMap = readFromFileToMap("src/main/java/aoc/day7/bag-rules.txt");
         System.out.println(containsShinyGold());
         System.out.println(countChildBags("shiny gold"));
     }
 
     static long containsShinyGold() {
-        return BAG_MAP.keySet()
+        return bagMap.keySet()
                 .stream()
                 .filter(HandyHaversacks::containsShinyGold)
                 .count();
     }
 
     static int countChildBags(String bagColor) {
-        final String bagContent = BAG_MAP.get(bagColor);
+        final String bagContent = bagMap.get(bagColor);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
 
@@ -45,7 +45,7 @@ public class HandyHaversacks {
     }
 
     private static boolean containsShinyGold(String parentBag) {
-        final String bagContent = BAG_MAP.get(parentBag);
+        final String bagContent = bagMap.get(parentBag);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
 

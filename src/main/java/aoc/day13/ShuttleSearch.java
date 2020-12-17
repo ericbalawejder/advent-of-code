@@ -20,6 +20,7 @@ public class ShuttleSearch {
         System.out.println(calculateSubsequentBusTimestamp(notes));
     }
 
+    // https://en.wikipedia.org/wiki/Chinese_remainder_theorem
     static long calculateSubsequentBusTimestamp(List<String> notes) {
         final String[] buses = Arrays.stream(notes.get(1).split(","))
                 .toArray(String[]::new);
@@ -63,7 +64,7 @@ public class ShuttleSearch {
                 .map(Integer::parseInt)
                 .collect(Collectors.toUnmodifiableList());
 
-        int min = Integer.MAX_VALUE;
+        int minimumTime = Integer.MAX_VALUE;
         int busId = 0;
         for (int bus : buses) {
             if (timestamp % bus == 0) {
@@ -71,12 +72,12 @@ public class ShuttleSearch {
             }
             int factor = timestamp / bus;
             int difference = (factor + 1) * bus - timestamp;
-            if (difference < min) {
-                min = difference;
+            if (difference < minimumTime) {
+                minimumTime = difference;
                 busId = bus;
             }
         }
-        return busId * min;
+        return busId * minimumTime;
     }
 
     private static long modularMultiplicativeInverse2(long n, long modulus) {

@@ -21,6 +21,7 @@ public class ShuttleSearch {
     }
 
     // https://en.wikipedia.org/wiki/Chinese_remainder_theorem
+    // https://rosettacode.org/wiki/Chinese_remainder_theorem#Java
     static long calculateSubsequentBusTimestamp(List<String> notes) {
         final String[] buses = Arrays.stream(notes.get(1).split(","))
                 .toArray(String[]::new);
@@ -34,12 +35,14 @@ public class ShuttleSearch {
                 .mapToLong(a -> a[1])
                 .reduce(1L, Math::multiplyExact);
 
-        final long sum = Arrays.stream(busesInService)
+        final long summation = Arrays.stream(busesInService)
                 .mapToLong(a -> a[0] * (productOfPrimes / a[1])
                         * modularMultiplicativeInverse(productOfPrimes / a[1], a[1]))
                 .sum();
 
-        return productOfPrimes - sum % productOfPrimes;
+        final long uniqueSolution = Math.floorMod(summation, productOfPrimes);
+
+        return productOfPrimes - uniqueSolution;
     }
 
     private static long modularMultiplicativeInverse(long n, long modulus) {

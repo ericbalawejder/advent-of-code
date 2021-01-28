@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class ThreeSum {
 
     public static void main(String[] args) {
-        List<Integer> values = readFromFile("src/main/java/aoc/day1/day1input.txt");
+        List<Integer> values = readFile("src/main/java/aoc/day1/day1input.txt");
         System.out.println(threeSum(values, 2020));
         System.out.println(calculateProduct(threeSum(values, 2020)));
     }
@@ -35,7 +35,9 @@ public class ThreeSum {
             while (left < right) {
                 int sum = sorted.get(i) + sorted.get(left) + sorted.get(right);
                 if (sum == target) {
-                    set.add(Arrays.asList(sorted.get(i), sorted.get(left++), sorted.get(right--)));
+                    set.add(List.of(sorted.get(i), sorted.get(left), sorted.get(right)));
+                    left++;
+                    right--;
                 }
                 else if (sum > target) {
                     right--;
@@ -48,22 +50,21 @@ public class ThreeSum {
         return List.copyOf(set);
     }
 
-    static List<Integer> calculateProduct(List<List<Integer>> lists) {
+    static int calculateProduct(List<List<Integer>> lists) {
         return lists.stream()
-                .map(list -> list.stream()
-                        .reduce(1, (a, b) -> a * b))
-                .collect(Collectors.toUnmodifiableList());
+                .flatMap(Collection::stream)
+                .reduce(1, Math::multiplyExact);
     }
 
-    private static List<Integer> readFromFile(String path) {
-        // Using try-with-resources so the stream closes automatically
+    private static List<Integer> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.map(Integer::parseInt)
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toUnmodifiableList());
         }
         catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
+
 }

@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class TwoSum {
 
     public static void main(String[] args) {
-        List<Integer> values = readFromFile("src/main/java/aoc/day1/day1input.txt");
+        List<Integer> values = readFile("src/main/java/aoc/day1/day1input.txt");
         System.out.println(findSum(values, 2020));
         System.out.println(listProduct(findSum(values, 2020)));
     }
@@ -23,33 +23,32 @@ public class TwoSum {
     static List<Integer> listProduct(List<List<Integer>> lists) {
         return lists.stream()
                 .map(list -> list.stream()
-                .reduce(1, (a, b) -> a * b))
+                .reduce(1, Math::multiplyExact))
                 .collect(Collectors.toUnmodifiableList());
     }
 
     static List<List<Integer>> findSum(List<Integer> list, int target) {
         List<List<Integer>> values = new ArrayList<>();
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (map.containsKey(list.get(i))) {
-                values.add(Arrays.asList(map.get(list.get(i)), list.get(i)));
+        for (Integer integer : list) {
+            if (map.containsKey(integer)) {
+                values.add(Arrays.asList(map.get(integer), integer));
             } else {
-                map.put(target - list.get(i), list.get(i));
+                map.put(target - integer, integer);
             }
         }
         return Collections.unmodifiableList(values);
     }
 
-    // https://stackabuse.com/java-read-a-file-into-an-arraylist/
-    private static List<Integer> readFromFile(String path) {
-        // Using try-with-resources so the stream closes automatically
+    private static List<Integer> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.map(Integer::parseInt)
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toUnmodifiableList());
         }
         catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
+
 }

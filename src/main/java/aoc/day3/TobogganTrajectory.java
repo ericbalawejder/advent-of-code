@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class TobogganTrajectory {
 
     public static void main(String[] args) {
-        int[][] grid = readFromFile("src/main/java/aoc/day3/tree-grid.txt");
+        int[][] grid = readFile("src/main/java/aoc/day3/tree-grid.txt");
         System.out.println(countTrees(grid, 3, 1));
         System.out.println(productOfTobogganTrajectories(
                 grid, Arrays.asList(Arrays.asList(1, 1),
@@ -36,7 +36,7 @@ public class TobogganTrajectory {
                 .reduce(1L, Math::multiplyExact);
     }
 
-    private static int[][] readFromFile(String path) {
+    private static int[][] readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.map(s -> s.chars().toArray())
                     .toArray(int[][]::new);
@@ -45,4 +45,5 @@ public class TobogganTrajectory {
             return new int[0][];
         }
     }
+
 }

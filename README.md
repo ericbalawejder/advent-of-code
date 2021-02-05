@@ -1,7 +1,7 @@
 ## Advent of code 2020
 https://adventofcode.com/
 
-#### Problem 1
+#### [Day 1](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day1)
 This year started off with two common [LeetCode](https://leetcode.com/) problems. 
 The first part is a common problem named TwoSum. The naive solution is brute force 
 to check each value added to the others. It can be done in one pass using a Map 
@@ -13,7 +13,18 @@ at index 0, while using two additional indexes, index + 1 and list.length() - 1,
 the two pointers towards each other taking advantage of the sorted order.
 
 
-#### Problem 14
+#### [Day 2](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day2)
+String processing. I split the data "4-15 h: gcxfgbpbghdtrkhn" into a tuple by white
+space and followed the validation rules.
+
+
+#### [Day 3](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day3)
+Day 3 can be summed up with this line of code. `.filter(i -> grid[i][i * x % grid[0].length] == (int) '#')`.
+Navigate through a grid with and count the times you hit a tree ('#'). I used the int values
+of the Characters in the input Strings because it was easier to stream them into an int[][]. 
+
+
+#### [Day 14](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day14)
 Bitwise OR and AND.
 
 A bitwise OR operation is often used for a SET operation. Any 1 in a value when OR'd 

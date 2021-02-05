@@ -4,27 +4,32 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// TODO improve upon readFile() and processInstructions()
 public class DockingData {
 
     public static void main(String[] args) {
-        //final List<String> data = readFile("src/main/java/aoc/day14/initialization-program.txt");
-        final List<String> data = readFile("src/main/java/aoc/day14/test.txt");
-        final List<List<String>> instructions = processInstructions(data);
-        System.out.println(decoderChip1(instructions));
-        //System.out.println(decoderChip2(instructions));
-        //System.out.println(applyBitmaskToAddress(26, "00000000000000000000000000000000X0XX"));
+        final List<String> data =
+                readFile("src/main/java/aoc/day14/initialization-program.txt");
 
+        final List<List<String>> instructions = processInstructions(data);
+
+        System.out.println(decoderChip1(instructions));
+        System.out.println(decoderChip2(instructions));
     }
 
     static long decoderChip2(List<List<String>> instructions) {
         final HashMap<Long, Long> memory = new HashMap<>();
         Optional<String> bitmask = Optional.empty();
+
         for (List<String> instruction : instructions) {
             if (instruction.size() == 1) {
                 bitmask = Optional.of(instruction.get(0));
@@ -43,14 +48,15 @@ public class DockingData {
     }
 
     private static List<Long> applyBitmaskToAddress(long address, String bitmask) {
-        List<Long> addresses = new ArrayList<>();
-        addresses.add(address);
+        Set<Long> addresses = new HashSet<>(Collections.singletonList(address));
+
         for (int i = 0; i < bitmask.length(); i++) {
             final long bit = 1L << (bitmask.length() - i - 1);
             if (bitmask.charAt(i) != '0') {
                 addresses = addresses.stream()
                         .map(a -> a | bit)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
+
                 if (bitmask.charAt(i) == 'X') {
                     addresses.addAll(addresses.stream()
                             .map(a -> a & ~bit)
@@ -58,13 +64,13 @@ public class DockingData {
                 }
             }
         }
-        return addresses.stream()
-                .collect(Collectors.toUnmodifiableList());
+        return List.copyOf(addresses);
     }
 
     static Long decoderChip1(List<List<String>> instructions) {
         final HashMap<Long, Long> memory = new HashMap<>();
         Optional<String> bitmask = Optional.empty();
+
         for (List<String> instruction : instructions) {
             if (instruction.size() == 1) {
                 bitmask = Optional.of(instruction.get(0));
@@ -80,17 +86,10 @@ public class DockingData {
                 .reduce(0L, Long::sum);
     }
 
-    private static long applyBitmask(long number, String bitmask) {
-        long value = number;
-        for (int i = 0; i < bitmask.length(); i++) {
-            final long bit = 1L << (bitmask.length() - i - 1);
-            if (bitmask.charAt(i) == '1') {
-                value |= bit;
-            } else if (bitmask.charAt(i) == '0') {
-                value &= ~bit;
-            }
-        }
-        return value;
+    private static long applyBitmask(long value, String bitmask) {
+        final long setValue = Long.parseLong(bitmask.replace("X", "0"), 2);
+        final long clearValue = Long.parseLong(bitmask.replace("X", "1"), 2);
+        return (value | setValue) & clearValue;
     }
 
     private static List<List<String>> processInstructions(List<String> data) {
@@ -101,7 +100,7 @@ public class DockingData {
             } else {
                 final String address = line.substring(line.indexOf('[') + 1, line.indexOf(']'));
                 final String value = line.substring(line.lastIndexOf(' ') + 1);
-                instructions.add(List.of(address,value));
+                instructions.add(List.of(address, value));
             }
         }
         return List.copyOf(instructions);

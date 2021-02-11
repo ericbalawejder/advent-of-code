@@ -21,7 +21,7 @@ class PassportProcessing {
     );
 
     public static void main(String[] args) throws IOException {
-        String[][] passports = readFromFile(
+        String[][] passports = readFile(
                 "src/main/java/aoc/day4/passport-data.txt");
         System.out.println(verifyPassportPart1(passports));
         System.out.println(verifyPassportPart2(passports));
@@ -61,11 +61,12 @@ class PassportProcessing {
         return pattern.matcher(value).matches();
     }
 
-    private static String[][] readFromFile(String path) throws IOException {
+    private static String[][] readFile(String path) throws IOException {
         final String data = Files.readString(Path.of(path));
         return Arrays.stream(data.split("\n\n"))
                 .map(s -> s.replace("\n", " "))
                 .map(s -> s.split(" "))
                 .toArray(String[][]::new);
     }
+
 }

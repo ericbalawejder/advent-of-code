@@ -11,13 +11,14 @@ import java.util.stream.Stream;
 public class OperationOrder {
 
     public static void main(String[] args) {
-        final List<String> homework = readFile("src/main/java/aoc/day18/test.txt");
+        final List<String> homework = readFile("src/main/java/aoc/day18/homework.txt");
         System.out.println(evaluateHomework(homework));
     }
 
     static long evaluateHomework(List<String> homework) {
         return homework.stream()
                 .map(OperationOrder::evaluateExpression)
+                .peek(System.out::println)
                 .reduce(0L, Math::addExact);
     }
 

@@ -38,6 +38,14 @@ private static final Map<String, String> PASSPORT_POLICY = Map.of(
 );
 ```
 
+
+#### [Day 5](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day5)
+A seat encoding is provided in the form `BFBBBFBLRR` and described as binary space partitioning.
+Map the encodings to binary `seatEncoding.replaceAll("[FL]", "0").replaceAll("[BR]", "1")` and
+sort them to find the highest seat. The sorted order is contiguous except for one value
+which is the missing seat.
+
+
 #### [Day 14](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day14)
 Bitwise OR and AND.
 
@@ -51,10 +59,20 @@ with 000000000000000000000000000001000000 (the original value where X was replac
 to set that one bit that we want to set and an AND with `111111111111111111111111111111111101` 
 (the original value where X was replaced with 1). 
 
-Part two was more challenging as I had trouble creating all the bitmask String combinations.
+Part two was more challenging. I had trouble creating all the bitmask String combinations.
 I resorted to looping through each index of the bitmask for bitwise comparison.
 
 
-#### [Day 18]()
-Convert expression to Reverse Polish Notation (RPN) and apply Shunting-yard algorithm for processing
-arithmetic. 
+#### [Day 18](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day18)
+Apply Shunting-yard algorithm for processing arithmetic. 
+
+For part 1, the order president was equivalent for addition and multiplication.
+```
+ADD(1, "+"),
+MULTIPLY(1, "*");
+```
+For part 2, the order president was addition over multiplication.
+```
+ADD(1, "+"),
+MULTIPLY(0, "*");
+```

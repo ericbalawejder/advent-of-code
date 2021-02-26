@@ -12,20 +12,19 @@ import java.util.stream.Stream;
 public class CustomCustomsPart2 {
 
     public static void main(String[] args) throws IOException {
-        final String path = "src/main/java/aoc/day6/group-answers.txt";
-        String[] answers = readFromFile(path);
+        final String[] answers = readFile("src/main/java/aoc/day6/group-answers.txt");
         System.out.println(calculateAnyone(answers));
         System.out.println(calculateEveryone(answers));
     }
 
-    private static long calculateAnyone(String[] groupAnswers) throws IOException {
+    private static long calculateAnyone(String[] groupAnswers) {
         return Stream.of(groupAnswers)
                 .map(s -> s.replaceAll("-", ""))
                 .mapToLong(s -> s.chars().distinct().count())
                 .sum();
     }
 
-    private static long calculateEveryone(String[] groupAnswers) throws IOException {
+    private static long calculateEveryone(String[] groupAnswers) {
         return Stream.of(groupAnswers)
                 .mapToLong(CustomCustomsPart2::countAnswerByGroup)
                 .sum();
@@ -47,10 +46,11 @@ public class CustomCustomsPart2 {
         return answeredByEveryone.size();
     }
 
-    private static String[] readFromFile(String path) throws IOException {
+    private static String[] readFile(String path) throws IOException {
         final String data = Files.readString(Path.of(path));
         return Arrays.stream(data.split("\n\n"))
                 .map(s -> s.replace("\n", "-"))
                 .toArray(String[]::new);
     }
+
 }

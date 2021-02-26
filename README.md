@@ -46,6 +46,11 @@ sort them to find the highest seat. The sorted order is contiguous except for on
 which is the missing seat.
 
 
+#### [Day 6](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day6)
+Count unique answers of a survey with a set. Use set intersection to count unique answers of
+a group of people.
+
+
 #### [Day 14](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day14)
 Bitwise OR and AND.
 
@@ -66,12 +71,12 @@ I resorted to looping through each index of the bitmask for bitwise comparison.
 #### [Day 18](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day18)
 Apply Shunting-yard algorithm for processing arithmetic. 
 
-For part 1, the order president was equivalent for addition and multiplication.
+For part 1, the order precedence was equivalent for addition and multiplication.
 ```
 ADD(1, "+"),
 MULTIPLY(1, "*");
 ```
-For part 2, the order president was addition over multiplication.
+For part 2, the order precedence was addition over multiplication.
 ```
 ADD(1, "+"),
 MULTIPLY(0, "*");

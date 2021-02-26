@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 public class CustomCustomsPart1 {
 
     public static void main(String[] args) throws IOException {
-        final String path = "src/main/java/aoc/day6/group-answers.txt";
-        String[] data = readFromFile(path);
+        final String[] data = readFile("src/main/java/aoc/day6/group-answers.txt");
         System.out.println(sumOfCounts(data));
     }
 
@@ -29,10 +28,11 @@ public class CustomCustomsPart1 {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private static String[] readFromFile(String path) throws IOException {
+    private static String[] readFile(String path) throws IOException {
         final String data = Files.readString(Path.of(path));
         return Arrays.stream(data.split("\n\n"))
                 .map(s -> s.replace("\n", ""))
                 .toArray(String[]::new);
     }
+
 }

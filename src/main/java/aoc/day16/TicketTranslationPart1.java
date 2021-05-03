@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,44 +15,42 @@ import java.util.stream.Stream;
 public class TicketTranslationPart1 {
 
     public static void main(String[] args) throws IOException {
-        final String filePath = "src/main/java/aoc/day16/tickets.txt";
+        final String filePath = "src/main/java/aoc/day16/test.txt";
         final List<String> ticketRulesAndNumbers = readTicketRulesAndNumbers(filePath);
         System.out.println(ticketScanningErrorRate(ticketRulesAndNumbers));
     }
 
     static Integer ticketScanningErrorRate(List<String> ticketRulesAndNumbers) {
-        final List<Optional<Integer>> tickets = findInvalidTickets(
+        final List<List<Integer>> tickets = findInvalidTickets(
                 ticketRulesAndNumbers.get(2),
                 findRuleNumbers(ticketRulesAndNumbers.get(0)));
 
         return tickets.stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(List::stream)
                 .reduce(Integer::sum)
                 .orElse(0);
     }
 
-    private static List<Optional<Integer>> findInvalidTickets(
-            String input1, Map<String, Predicate<Integer>> rules) {
+    private static List<List<Integer>> findInvalidTickets(
+            String nearbyTickets, Map<String, Predicate<Integer>> rules) {
 
-        return Stream.of(input1.split("\\n"))
+        return Stream.of(nearbyTickets.split("\\n"))
                 .skip(1)
                 .map(s -> Stream.of(s.split(","))
                         .map(Integer::valueOf)
                         .collect(Collectors.toUnmodifiableList()))
-                .map(ticket -> findInvalidFields(ticket, rules))
+                .map(tickets -> findInvalidFields(tickets, rules))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private static Optional<Integer> findInvalidFields(
-            List<Integer> ticket, Map<String, Predicate<Integer>> rules) {
+    private static List<Integer> findInvalidFields(
+            List<Integer> tickets, Map<String, Predicate<Integer>> rules) {
 
-        for (Integer field : ticket) {
-            if(rules.values().stream().noneMatch(rule -> rule.test(field))) {
-                return Optional.of(field);
-            }
-        }
-        return Optional.empty();
+        return tickets.stream()
+                .filter(field -> rules.values()
+                        .stream()
+                        .noneMatch(rule -> rule.test(field)))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private static Map<String, Predicate<Integer>> findRuleNumbers(String rules) {

@@ -21,36 +21,42 @@ public class TicketTranslationPart2 {
     public static void main(String[] args) throws IOException {
         final String filePath = "src/main/java/aoc/day16/tickets.txt";
         final List<String> ticketRulesAndNumbers = readTicketRulesAndNumbers(filePath);
+        System.out.println(productOfDepartureFields(ticketRulesAndNumbers));
+    }
 
-        final Map<String, Predicate<Integer>> rules = findRuleNumbers(ticketRulesAndNumbers.get(0));
+    static long productOfDepartureFields(List<String> ticketRulesAndNumbers) {
+        final Map<String, Predicate<Integer>> rules =
+                findRuleNumbers(ticketRulesAndNumbers.get(0));
 
-        final List<List<Integer>> tickets = findValidTickets(ticketRulesAndNumbers.get(2), rules);
+        final List<List<Integer>> tickets =
+                findValidTickets(ticketRulesAndNumbers.get(2), rules);
 
-        final Map<String, List<Integer>> possibleFieldPositions = findPossibleFieldPositions(rules, tickets);
+        final Map<String, List<Integer>> possibleFieldPositions =
+                findPossibleFieldPositions(rules, tickets);
 
-        final List<String> sortedFields = possibleFieldPositions.entrySet().stream()
+        final List<String> sortedFields = possibleFieldPositions
+                .entrySet()
+                .stream()
                 .sorted(Comparator.comparing(e -> e.getValue().size()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toUnmodifiableList());
 
         for (int i = sortedFields.size() - 2; i >= 0; i--) {
-            List<Integer> smallerList = possibleFieldPositions.get(sortedFields.get(i));
-            List<Integer> largerList = possibleFieldPositions.get(sortedFields.get(i + 1));
+            final List<Integer> smallerList = possibleFieldPositions.get(sortedFields.get(i));
+            final List<Integer> largerList = possibleFieldPositions.get(sortedFields.get(i + 1));
             largerList.removeAll(smallerList);
         }
 
         final List<Integer> myTicket = findValidTickets(ticketRulesAndNumbers.get(1), rules).get(0);
 
-        long result = possibleFieldPositions.keySet()
+        return possibleFieldPositions.keySet()
                 .stream()
                 .filter(s -> s.startsWith("departure"))
                 .map(possibleFieldPositions::get)
                 .map(list -> list.get(0))
                 .mapToLong(myTicket::get)
                 .reduce(Math::multiplyExact)
-                .orElse(0);
-
-        System.out.println(result);
+                .orElseThrow(() -> new RuntimeException("departure field not found"));
     }
 
     private static Map<String, List<Integer>> findPossibleFieldPositions(
@@ -64,8 +70,8 @@ public class TicketTranslationPart2 {
                     matches &= rule.getValue().test(ticket.get(i));
                 }
                 if (matches) {
-                    List<Integer> positions = positionsMap
-                            .getOrDefault(rule.getKey(), new ArrayList<>());
+                    List<Integer> positions =
+                            positionsMap.getOrDefault(rule.getKey(), new ArrayList<>());
                     positions.add(i);
                     positionsMap.put(rule.getKey(), positions);
                 }
@@ -95,16 +101,6 @@ public class TicketTranslationPart2 {
             }
         }
         return true;
-    }
-
-    private static List<Integer> findInvalidFields(
-            List<Integer> tickets, Map<String, Predicate<Integer>> rules) {
-
-        return tickets.stream()
-                .filter(field -> rules.values()
-                        .stream()
-                        .noneMatch(rule -> rule.test(field)))
-                .collect(Collectors.toUnmodifiableList());
     }
 
     private static Map<String, Predicate<Integer>> findRuleNumbers(String rules) {

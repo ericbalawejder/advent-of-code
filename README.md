@@ -51,6 +51,18 @@ Count unique answers of a survey with a set. Use set intersection to count uniqu
 a group of people.
 
 
+#### [Day 7](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day7)
+
+
+#### [Day 13](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day13)
+find the first i such that:
+i % 7 == 0
+i % 13 == 12
+i % 59 == 55
+i % 31 == 25
+i % 19 == 12
+
+
 #### [Day 14](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day14)
 Bitwise OR and AND.
 
@@ -68,6 +80,9 @@ Part two was more challenging. I had trouble creating all the bitmask String com
 I resorted to looping through each index of the bitmask for bitwise comparison.
 
 
+#### [Day 16](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day16)
+
+
 #### [Day 18](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day18)
 Apply Shunting-yard algorithm for processing arithmetic. 
 
@@ -81,3 +96,8 @@ For part 2, the order precedence was addition over multiplication.
 ADD(1, "+"),
 MULTIPLY(0, "*");
 ```
+
+
+#### [Day 21](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/day21)
+This challenge is about set theory. The allergen is the ingredient at the intersection of
+sets consisting of ingredients known to contain it.

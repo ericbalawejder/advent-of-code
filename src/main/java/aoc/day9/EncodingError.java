@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class EncodingError {
+
     public static void main(String[] args) {
         final List<Long> xmas = readFromFile("src/main/java/aoc/day9/xmas.txt");
         System.out.println(findInvalidNumber(xmas));
@@ -20,7 +21,7 @@ public class EncodingError {
 
     static Optional<Long> findEncryptionWeakness(List<Long> xmas) {
         Optional<Long> invalidNumber = findInvalidNumber(xmas);
-        if (!invalidNumber.isPresent()) {
+        if (invalidNumber.isEmpty()) {
             return invalidNumber;
         }
         final Long notValid = invalidNumber.get();
@@ -67,11 +68,11 @@ public class EncodingError {
 
     private static boolean twoSum(List<Long> numbers, long target) {
         Set<Long> set = new HashSet<>();
-        for (int i = 0; i < numbers.size(); i++) {
-            if (set.contains(numbers.get(i))) {
+        for (Long number : numbers) {
+            if (set.contains(number)) {
                 return true;
             } else {
-                set.add(target - numbers.get(i));
+                set.add(target - number);
             }
         }
         return false;

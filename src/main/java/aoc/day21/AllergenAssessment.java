@@ -3,7 +3,6 @@ package aoc.day21;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -32,7 +31,7 @@ public class AllergenAssessment {
         final List<String> ingredients = getAllIngredients(foods);
         final Set<String> allergens = getAllAllergens(ingredientsByAllergens);
 
-        return difference(ingredients, new ArrayList<>(allergens));
+        return difference(ingredients, List.copyOf(allergens));
     }
 
     private static SortedMap<String, String> matchFoodByAllergen(List<List<String>> foods) {
@@ -85,7 +84,7 @@ public class AllergenAssessment {
 
             for (String allergen : allergens) {
                 if (!ingredientsByAllergens.containsKey(allergen)) {
-                    ingredientsByAllergens.put(allergen, new ArrayList<>(ingredients));
+                    ingredientsByAllergens.put(allergen, List.copyOf(ingredients));
                 } else {
                     final List<String> currentIngredients = ingredientsByAllergens.get(allergen);
                     ingredientsByAllergens.put(allergen, intersection(currentIngredients, ingredients));

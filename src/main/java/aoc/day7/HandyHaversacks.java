@@ -15,22 +15,27 @@ import java.util.stream.Stream;
 
 public class HandyHaversacks {
 
-    private static Map<String, String> bagMap;
+    private final Map<String, String> bagMap;
 
     public static void main(String[] args) throws IOException {
-        bagMap = readFromFileToMap("src/main/java/aoc/day7/bag-rules.txt");
-        System.out.println(containsShinyGold());
-        System.out.println(countChildBags("shiny gold"));
+        final String path = "src/main/java/aoc/day7/bag-rules.txt";
+        final HandyHaversacks haversacks = new HandyHaversacks(readFile(path));
+        System.out.println(haversacks.containsShinyGold());
+        System.out.println(haversacks.countChildBags("shiny gold"));
     }
 
-    static long containsShinyGold() {
+    HandyHaversacks(Map<String, String> bagMap) {
+        this.bagMap = bagMap;
+    }
+
+    long containsShinyGold() {
         return bagMap.keySet()
                 .stream()
-                .filter(HandyHaversacks::containsShinyGold)
+                .filter(this::containsShinyGold)
                 .count();
     }
 
-    static int countChildBags(String bagColor) {
+    int countChildBags(String bagColor) {
         final String bagContent = bagMap.get(bagColor);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
@@ -38,18 +43,18 @@ public class HandyHaversacks {
         int count = 0;
         while (matcher.find()) {
             int amount = Integer.parseInt(matcher.group(1));
-            String bagName = matcher.group(2);
+            final String bagName = matcher.group(2);
             count += amount + (amount * countChildBags(bagName));
         }
         return count;
     }
 
-    private static boolean containsShinyGold(String parentBag) {
+    private boolean containsShinyGold(String parentBag) {
         final String bagContent = bagMap.get(parentBag);
         final Matcher matcher = Pattern.compile("(\\d)\\s(\\w+\\s\\w+)")
                 .matcher(bagContent);
 
-        List<String> childBags = new ArrayList<>();
+        final List<String> childBags = new ArrayList<>();
         while (matcher.find()) {
             if (matcher.group(2).equals("shiny gold")) {
                 return true;
@@ -57,16 +62,10 @@ public class HandyHaversacks {
             childBags.add(matcher.group(2));
         }
         return childBags.stream()
-                .anyMatch(HandyHaversacks::containsShinyGold);
+                .anyMatch(this::containsShinyGold);
     }
 
-    private static String parentBag(String bagRule) {
-        final Matcher matcher = Pattern.compile("^(\\w+\\s\\w+)").matcher(bagRule);
-        matcher.find();
-        return matcher.group(0);
-    }
-
-    private static Map<String, String> readFromFileToMap(String path) {
+    private static Map<String, String> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.collect(Collectors.toMap(
                     HandyHaversacks::parentBag, Function.identity())
@@ -76,4 +75,11 @@ public class HandyHaversacks {
             return new HashMap<>();
         }
     }
+
+    private static String parentBag(String bagRule) {
+        final Matcher matcher = Pattern.compile("^(\\w+\\s\\w+)").matcher(bagRule);
+        matcher.find();
+        return matcher.group(0);
+    }
+
 }

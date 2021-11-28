@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RainRisk {
@@ -48,70 +47,55 @@ public class RainRisk {
 
     private void parseSymbols(char character, int distance) {
         switch (character) {
-            case 'N': {
+            case 'N' -> {
                 Orientation orientation = getOrientation();
                 setOrientation(Orientation.NORTH);
                 advance(distance);
                 setOrientation(orientation);
-                break;
             }
-            case 'E': {
+            case 'E' -> {
                 Orientation orientation = getOrientation();
                 setOrientation(Orientation.EAST);
                 advance(distance);
                 setOrientation(orientation);
-                break;
             }
-            case 'S': {
+            case 'S' -> {
                 Orientation orientation = getOrientation();
                 setOrientation(Orientation.SOUTH);
                 advance(distance);
                 setOrientation(orientation);
-                break;
             }
-            case 'W': {
+            case 'W' -> {
                 Orientation orientation = getOrientation();
                 setOrientation(Orientation.WEST);
                 advance(distance);
                 setOrientation(orientation);
-                break;
             }
-            case 'R':
+            case 'R' -> {
                 for (int i = 0; i < distance / 90; i++) {
                     turnRight();
                 }
-                break;
-            case 'L':
+            }
+            case 'L' -> {
                 for (int i = 0; i < distance / 90; i++) {
                     turnLeft();
                 }
-                break;
-            case 'F':
-                advance(distance);
-                break;
-            default:
-                throw new IllegalArgumentException("Bad instruction format");
+            }
+            case 'F' -> advance(distance);
+            default -> throw new IllegalArgumentException("Bad instruction format");
         }
     }
 
     private void advance(int distance) {
         switch (getOrientation()) {
-            case NORTH:
-                setGridPosition(new GridPosition(gridPosition.getX(),
-                        gridPosition.getY() + distance));
-                break;
-            case EAST:
-                setGridPosition(new GridPosition(gridPosition.getX() + distance,
-                        gridPosition.getY()));
-                break;
-            case SOUTH:
-                setGridPosition(new GridPosition(gridPosition.getX(),
-                        gridPosition.getY() - distance));
-                break;
-            case WEST:
-                setGridPosition(new GridPosition(gridPosition.getX() - distance,
-                        gridPosition.getY()));
-                break;
+            case NORTH -> setGridPosition(new GridPosition(gridPosition.getX(),
+                    gridPosition.getY() + distance));
+            case EAST -> setGridPosition(new GridPosition(gridPosition.getX() + distance,
+                    gridPosition.getY()));
+            case SOUTH -> setGridPosition(new GridPosition(gridPosition.getX(),
+                    gridPosition.getY() - distance));
+            case WEST -> setGridPosition(new GridPosition(gridPosition.getX() - distance,
+                    gridPosition.getY()));
         }
     }
 
@@ -129,11 +113,12 @@ public class RainRisk {
 
     private List<String> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            return stream.collect(Collectors.toUnmodifiableList());
+            return stream.toList();
         }
         catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
+
 }

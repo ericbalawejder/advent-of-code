@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RainRiskWaypoint {
@@ -21,7 +20,7 @@ public class RainRiskWaypoint {
                 new GridPosition(10, 1), Orientation.EAST);
 
         final List<String> navigationInstructions = rainRiskWaypoint
-                .readFile("src/main/java/aoc/day12/test.txt");
+                .readFile("src/main/java/aoc/day12/navigation.txt");
 
         System.out.println(rainRiskWaypoint.manhattanDistance(navigationInstructions));
         System.out.println("Waypoint " + rainRiskWaypoint.getWaypointGridPosition());
@@ -81,70 +80,56 @@ public class RainRiskWaypoint {
 
     private void parseSymbols(char character, int distance) {
         switch (character) {
-            case 'N': {
+            case 'N' -> {
                 Orientation orientation = getWaypointOrientation();
                 setWaypointOrientation(Orientation.NORTH);
                 advanceWaypoint(distance);
                 setWaypointOrientation(orientation);
-                break;
             }
-            case 'E': {
+            case 'E' -> {
                 Orientation orientation = getWaypointOrientation();
                 setWaypointOrientation(Orientation.EAST);
                 advanceWaypoint(distance);
                 setWaypointOrientation(orientation);
-                break;
             }
-            case 'S': {
+            case 'S' -> {
                 Orientation orientation = getWaypointOrientation();
                 setWaypointOrientation(Orientation.SOUTH);
                 advanceWaypoint(distance);
                 setWaypointOrientation(orientation);
-                break;
             }
-            case 'W': {
+            case 'W' -> {
                 Orientation orientation = getWaypointOrientation();
                 setWaypointOrientation(Orientation.WEST);
                 advanceWaypoint(distance);
                 setWaypointOrientation(orientation);
-                break;
             }
-            case 'R':
+            case 'R' -> {
                 for (int i = 0; i < distance / 90; i++) {
                     turnRight();
                 }
-                break;
-            case 'L':
+            }
+            case 'L' -> {
                 for (int i = 0; i < distance / 90; i++) {
                     turnLeft();
                 }
-                break;
-            case 'F':
-                advanceFerry(distance);
-                break;
-            default:
+            }
+            case 'F' -> advanceFerry(distance);
+            default ->
                 throw new IllegalArgumentException("Bad instruction format");
         }
     }
 
     private void advanceWaypoint(int distance) {
         switch (getWaypointOrientation()) {
-            case NORTH:
-                setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
-                        waypointGridPosition.getY() + distance));
-                break;
-            case EAST:
-                setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() + distance,
-                        waypointGridPosition.getY()));
-                break;
-            case SOUTH:
-                setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
-                        waypointGridPosition.getY() - distance));
-                break;
-            case WEST:
-                setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() - distance,
-                        waypointGridPosition.getY()));
-                break;
+            case NORTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
+                    waypointGridPosition.getY() + distance));
+            case EAST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() + distance,
+                    waypointGridPosition.getY()));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
+                    waypointGridPosition.getY() - distance));
+            case WEST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() - distance,
+                    waypointGridPosition.getY()));
         }
     }
 
@@ -160,22 +145,14 @@ public class RainRiskWaypoint {
         setWaypointOrientation(Orientation.values()[newIndex]);
 
         switch (getWaypointOrientation()) {
-            case NORTH:
-                setWaypointGridPosition(new GridPosition(- Math.abs(waypointGridPosition.getY()),
-                        Math.abs(waypointGridPosition.getX())));
-                break;
-            case EAST:
-                setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                        Math.abs(waypointGridPosition.getX())));
-                break;
-            case SOUTH:
-                setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                        - Math.abs(waypointGridPosition.getX())));
-                break;
-            case WEST:
-                setWaypointGridPosition(new GridPosition(- Math.abs(waypointGridPosition.getY()),
-                        - Math.abs(waypointGridPosition.getX())));
-                break;
+            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
+                    Math.abs(waypointGridPosition.getX())));
+            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
+                    Math.abs(waypointGridPosition.getX())));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
+                    -Math.abs(waypointGridPosition.getX())));
+            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
+                    -Math.abs(waypointGridPosition.getX())));
         }
     }
 
@@ -185,28 +162,20 @@ public class RainRiskWaypoint {
         setWaypointOrientation(Orientation.values()[newIndex]);
 
         switch (getWaypointOrientation()) {
-            case NORTH:
-                setWaypointGridPosition(new GridPosition(- Math.abs(waypointGridPosition.getY()),
-                        Math.abs(waypointGridPosition.getX())));
-                break;
-            case EAST:
-                setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                        Math.abs(waypointGridPosition.getX())));
-                break;
-            case SOUTH:
-                setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                        - Math.abs(waypointGridPosition.getX())));
-                break;
-            case WEST:
-                setWaypointGridPosition(new GridPosition(- Math.abs(waypointGridPosition.getY()),
-                        - Math.abs(waypointGridPosition.getX())));
-                break;
+            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
+                    Math.abs(waypointGridPosition.getX())));
+            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
+                    Math.abs(waypointGridPosition.getX())));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
+                    -Math.abs(waypointGridPosition.getX())));
+            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
+                    -Math.abs(waypointGridPosition.getX())));
         }
     }
 
     private List<String> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            return stream.collect(Collectors.toUnmodifiableList());
+            return stream.toList();
         }
         catch (IOException e) {
             e.printStackTrace();

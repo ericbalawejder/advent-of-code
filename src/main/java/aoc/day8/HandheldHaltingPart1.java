@@ -30,18 +30,13 @@ public class HandheldHaltingPart1 {
             String argument = instruction.substring(4);
 
             switch (operation) {
-                case "acc":
+                case "acc" -> {
                     accumulator += Integer.parseInt(argument);
                     position++;
-                    break;
-                case "jmp":
-                    position += Integer.parseInt(argument);
-                    break;
-                case "nop":
-                    position++;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Bad instructions");
+                }
+                case "jmp" -> position += Integer.parseInt(argument);
+                case "nop" -> position++;
+                default -> throw new IllegalArgumentException("Bad instructions");
             }
         }
         return accumulator;

@@ -7,25 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class PolicyValidatorPart1 {
+public class PolicyValidator {
 
     public static void main(String[] args) {
         final List<Password> passwordRules = readFile("src/main/java/aoc/year2020/day2/passwords.txt");
-        System.out.println(passwordValidator(passwordRules).size());
+        System.out.println(passwordValidator(passwordRules));
         System.out.println(passwordValidatorPart2(passwordRules));
     }
 
     static int passwordValidatorPart2(List<Password> passwords) {
         return passwords.stream()
-                .filter(PolicyValidatorPart1::isValidPart2)
+                .filter(PolicyValidator::isValidPart2)
                 .toList()
                 .size();
     }
 
-    static List<Password> passwordValidator(List<Password> passwords) {
+    static int passwordValidator(List<Password> passwords) {
         return passwords.stream()
-                .filter(PolicyValidatorPart1::isValid)
-                .toList();
+                .filter(PolicyValidator::isValid)
+                .toList()
+                .size();
     }
 
     private static boolean isValidPart2(Password password) {
@@ -50,4 +51,5 @@ public class PolicyValidatorPart1 {
             return new ArrayList<>();
         }
     }
+
 }

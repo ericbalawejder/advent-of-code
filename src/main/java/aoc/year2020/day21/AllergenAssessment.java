@@ -44,7 +44,7 @@ public class AllergenAssessment {
 
                 final List<String> uniqueIngredients = allergenMap.values()
                         .stream()
-                        .collect(Collectors.toUnmodifiableList());
+                        .toList();
 
                 List<String> ingredients = difference(ingredientsByAllergens.get(allergen), uniqueIngredients);
 
@@ -61,9 +61,9 @@ public class AllergenAssessment {
     private static List<String> getAllIngredients(List<List<String>> foods) {
         return foods.stream()
                 .map(food -> Arrays.stream(food.get(0).split(" "))
-                        .collect(Collectors.toUnmodifiableList()))
+                        .toList())
                 .flatMap(List::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private static Set<String> getAllAllergens(SortedMap<String, List<String>> ingredientsByAllergens) {
@@ -77,10 +77,10 @@ public class AllergenAssessment {
         final SortedMap<String, List<String>> ingredientsByAllergens = new TreeMap<>();
         for (List<String> food : foods) {
             final List<String> ingredients = Arrays.stream(food.get(0).split(" "))
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
 
             final List<String> allergens = Arrays.stream(food.get(1).split(" "))
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
 
             for (String allergen : allergens) {
                 if (!ingredientsByAllergens.containsKey(allergen)) {
@@ -97,13 +97,13 @@ public class AllergenAssessment {
     private static <T> List<T> difference(final List<T> listA, final List<T> listB) {
         return listA.stream()
                 .filter(e -> !listB.contains(e))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private static <T> List<T> intersection(final List<T> listA, final List<T> listB) {
         return listA.stream()
                 .filter(listB::contains)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private static List<List<String>> readFile(String path) throws IOException {
@@ -111,7 +111,7 @@ public class AllergenAssessment {
                 .map(s -> s.replaceAll("[^a-zA-Z0-9\\s]", ""))
                 .map(s -> s.split(" contains "))
                 .map(Arrays::asList)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     //region Unused
@@ -121,7 +121,7 @@ public class AllergenAssessment {
 
     private static <T> List<T> union(final List<T> listA, final List<T> listB) {
         return Stream.concat(listA.stream(), listB.stream())
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
     //endregion
 

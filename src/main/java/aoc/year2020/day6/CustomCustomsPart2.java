@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,18 +33,33 @@ public class CustomCustomsPart2 {
 
     private static long countAnswerByGroup(String answers) {
         final List<String> groupAnswers = List.of(answers.split("-"));
+
         final Set<Integer> answeredByEveryone = groupAnswers.get(0)
                 .chars()
                 .boxed()
                 .collect(Collectors.toSet());
 
-        groupAnswers.stream()
+        final List<Set<Integer>> individualAnswers = groupAnswers.stream()
                 .map(individualAnswer -> individualAnswer.chars()
                         .boxed()
                         .collect(Collectors.toSet()))
-                .forEach(answeredByEveryone::retainAll);
+                .toList();
 
-        return answeredByEveryone.size();
+        final List<Set<Integer>> intersectionOfAnswers = individualAnswers.stream()
+                .map(set -> intersection(answeredByEveryone, set))
+                .toList();
+
+        final Set<Integer> intersection = intersectionOfAnswers.stream()
+                .skip(1)
+                .collect(() -> new HashSet<>(intersectionOfAnswers.get(0)), Set::retainAll, Set::retainAll);
+
+        return intersection.size();
+    }
+
+    private static <T> Set<T> intersection(final Set<T> setA, final Set<T> setB) {
+        return setA.stream()
+                .filter(setB::contains)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static String[] readFile(String path) throws IOException {

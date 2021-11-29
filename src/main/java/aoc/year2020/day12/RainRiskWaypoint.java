@@ -43,7 +43,7 @@ public class RainRiskWaypoint {
             final int distance = Integer.parseInt(instruction.substring(1));
             parseSymbols(action, distance);
         }
-        return Math.abs(ferryGridPosition.getX()) + Math.abs(ferryGridPosition.getY());
+        return Math.abs(ferryGridPosition.x()) + Math.abs(ferryGridPosition.y());
     }
 
     GridPosition getWaypointGridPosition() {
@@ -122,21 +122,21 @@ public class RainRiskWaypoint {
 
     private void advanceWaypoint(int distance) {
         switch (getWaypointOrientation()) {
-            case NORTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
-                    waypointGridPosition.getY() + distance));
-            case EAST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() + distance,
-                    waypointGridPosition.getY()));
-            case SOUTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX(),
-                    waypointGridPosition.getY() - distance));
-            case WEST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.getX() - distance,
-                    waypointGridPosition.getY()));
+            case NORTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.x(),
+                    waypointGridPosition.y() + distance));
+            case EAST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.x() + distance,
+                    waypointGridPosition.y()));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(waypointGridPosition.x(),
+                    waypointGridPosition.y() - distance));
+            case WEST -> setWaypointGridPosition(new GridPosition(waypointGridPosition.x() - distance,
+                    waypointGridPosition.y()));
         }
     }
 
     private void advanceFerry(int distance) {
         setFerryGridPosition(new GridPosition(
-                waypointGridPosition.getX() * distance + ferryGridPosition.getX(),
-                waypointGridPosition.getY() * distance + ferryGridPosition.getY()));
+                waypointGridPosition.x() * distance + ferryGridPosition.x(),
+                waypointGridPosition.y() * distance + ferryGridPosition.y()));
     }
 
     private void turnRight() {
@@ -145,14 +145,14 @@ public class RainRiskWaypoint {
         setWaypointOrientation(Orientation.values()[newIndex]);
 
         switch (getWaypointOrientation()) {
-            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
-                    Math.abs(waypointGridPosition.getX())));
-            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                    Math.abs(waypointGridPosition.getX())));
-            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                    -Math.abs(waypointGridPosition.getX())));
-            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
-                    -Math.abs(waypointGridPosition.getX())));
+            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.y()),
+                    Math.abs(waypointGridPosition.x())));
+            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.y()),
+                    Math.abs(waypointGridPosition.x())));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.y()),
+                    -Math.abs(waypointGridPosition.x())));
+            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.y()),
+                    -Math.abs(waypointGridPosition.x())));
         }
     }
 
@@ -162,14 +162,14 @@ public class RainRiskWaypoint {
         setWaypointOrientation(Orientation.values()[newIndex]);
 
         switch (getWaypointOrientation()) {
-            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
-                    Math.abs(waypointGridPosition.getX())));
-            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                    Math.abs(waypointGridPosition.getX())));
-            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.getY()),
-                    -Math.abs(waypointGridPosition.getX())));
-            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.getY()),
-                    -Math.abs(waypointGridPosition.getX())));
+            case NORTH -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.y()),
+                    Math.abs(waypointGridPosition.x())));
+            case EAST -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.y()),
+                    Math.abs(waypointGridPosition.x())));
+            case SOUTH -> setWaypointGridPosition(new GridPosition(Math.abs(waypointGridPosition.y()),
+                    -Math.abs(waypointGridPosition.x())));
+            case WEST -> setWaypointGridPosition(new GridPosition(-Math.abs(waypointGridPosition.y()),
+                    -Math.abs(waypointGridPosition.x())));
         }
     }
 
@@ -182,4 +182,5 @@ public class RainRiskWaypoint {
             return new ArrayList<>();
         }
     }
+
 }

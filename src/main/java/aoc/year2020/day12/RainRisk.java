@@ -30,7 +30,7 @@ public class RainRisk {
             final int distance = Integer.parseInt(instruction.substring(1));
             parseSymbols(action, distance);
         }
-        return Math.abs(gridPosition.getX()) + Math.abs(gridPosition.getY());
+        return Math.abs(gridPosition.x()) + Math.abs(gridPosition.y());
     }
 
     void setGridPosition(GridPosition gridPosition) {
@@ -88,14 +88,14 @@ public class RainRisk {
 
     private void advance(int distance) {
         switch (getOrientation()) {
-            case NORTH -> setGridPosition(new GridPosition(gridPosition.getX(),
-                    gridPosition.getY() + distance));
-            case EAST -> setGridPosition(new GridPosition(gridPosition.getX() + distance,
-                    gridPosition.getY()));
-            case SOUTH -> setGridPosition(new GridPosition(gridPosition.getX(),
-                    gridPosition.getY() - distance));
-            case WEST -> setGridPosition(new GridPosition(gridPosition.getX() - distance,
-                    gridPosition.getY()));
+            case NORTH -> setGridPosition(new GridPosition(gridPosition.x(),
+                    gridPosition.y() + distance));
+            case EAST -> setGridPosition(new GridPosition(gridPosition.x() + distance,
+                    gridPosition.y()));
+            case SOUTH -> setGridPosition(new GridPosition(gridPosition.x(),
+                    gridPosition.y() - distance));
+            case WEST -> setGridPosition(new GridPosition(gridPosition.x() - distance,
+                    gridPosition.y()));
         }
     }
 

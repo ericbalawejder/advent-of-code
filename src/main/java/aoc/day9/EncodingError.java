@@ -20,7 +20,7 @@ public class EncodingError {
     }
 
     static Optional<Long> findEncryptionWeakness(List<Long> xmas) {
-        Optional<Long> invalidNumber = findInvalidNumber(xmas);
+        final Optional<Long> invalidNumber = findInvalidNumber(xmas);
         if (invalidNumber.isEmpty()) {
             return invalidNumber;
         }
@@ -47,7 +47,7 @@ public class EncodingError {
         final int preamble = 25;
         int start = 0;
         for (int i = preamble; i < xmas.size(); i++) {
-            List<Long> subList = xmas.subList(start, i);
+            final List<Long> subList = xmas.subList(start, i);
             if (!twoSum(subList, xmas.get(i))) {
                 return Optional.of(xmas.get(i));
             }
@@ -58,16 +58,16 @@ public class EncodingError {
 
     private static Long sumMinMax(List<Long> subList) {
         return subList.stream()
-                .min(Long::compareTo)
-                .orElse(0L)
-                +
-                subList.stream()
-                        .max(Long::compareTo)
-                        .orElse(0L);
+                .collect(Collectors.teeing(
+                        Collectors.maxBy(Long::compareTo),
+                        Collectors.minBy(Long::compareTo),
+                        (e1, e2) -> e1.orElseThrow(() -> new IllegalArgumentException("list is empty"))
+                                + e2.orElseThrow(() -> new IllegalArgumentException("list is empty"))
+                ));
     }
 
     private static boolean twoSum(List<Long> numbers, long target) {
-        Set<Long> set = new HashSet<>();
+        final Set<Long> set = new HashSet<>();
         for (Long number : numbers) {
             if (set.contains(number)) {
                 return true;
@@ -80,12 +80,12 @@ public class EncodingError {
 
     private static List<Long> readFromFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            return stream.map(Long::parseLong)
-                    .collect(Collectors.toCollection(ArrayList::new));
+            return stream.map(Long::parseLong).toList();
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
+
 }
 

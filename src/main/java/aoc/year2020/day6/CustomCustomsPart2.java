@@ -37,12 +37,12 @@ public class CustomCustomsPart2 {
         final Set<Integer> answeredByEveryone = groupAnswers.get(0)
                 .chars()
                 .boxed()
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
 
         final List<Set<Integer>> individualAnswers = groupAnswers.stream()
                 .map(individualAnswer -> individualAnswer.chars()
                         .boxed()
-                        .collect(Collectors.toSet()))
+                        .collect(Collectors.toUnmodifiableSet()))
                 .toList();
 
         final List<Set<Integer>> intersectionOfAnswers = individualAnswers.stream()

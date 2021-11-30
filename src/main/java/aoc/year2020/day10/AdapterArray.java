@@ -37,7 +37,7 @@ public class AdapterArray {
         System.out.println(findAllCombinationsOfAdapters(outputJoltage));
 
         final Graph<Integer, DefaultEdge> adapterGraph = generateDirectedGraph(outputJoltage);
-        //visualizeGraph(adapterGraph);
+        //visualizeGraph(adapterGraph); // Only for test data. Input data is too large.
         System.out.println(countAllPaths(adapterGraph, outputJoltage));
     }
 
@@ -74,32 +74,20 @@ public class AdapterArray {
         return combinations.get(sortedAdapters.last());
     }
 
-    /** The ratio of methods is shown below for different test data.
-     * findAllCombinationsOfAdapters() / countAllPaths()
-     * 36/24, 84/48, 240/132, 19208/10976
-     *
-     * The logic in countAllPaths() is not counting all combinations of paths. It may be a permutation
-     * vs combination issue.
-     *
-     * List<GraphPath<Integer, DefaultEdge>> longestPath =
-     *                 paths.getAllPaths(sortedAdapters.first(), sortedAdapters.last(), true, null);
-     *
-     * https://jgrapht.org/javadoc/org.jgrapht.core/org/jgrapht/alg/shortestpath/AllDirectedPaths.html
-     * The third argument, true, is for simple paths. If it is set to false, an upper bound must be used
-     * for the fourth argument to avoid infinite cycles.
-     */
     static long countAllPaths(
             Graph<Integer, DefaultEdge> directedGraph, SortedSet<Integer> sortedAdapters) {
 
+        final SortedSet<Integer> adapters = Stream.concat(Stream.of(0), sortedAdapters.stream())
+                .collect(Collectors.toCollection(TreeSet::new));
         final AllDirectedPaths<Integer, DefaultEdge> paths = new AllDirectedPaths<>(directedGraph);
         final List<GraphPath<Integer, DefaultEdge>> longestPath =
-                paths.getAllPaths(sortedAdapters.first(), sortedAdapters.last(), true, null);
+                paths.getAllPaths(adapters.first(), adapters.last(), true, null);
 
         return longestPath.size();
     }
 
-    private static Graph<Integer, DefaultEdge> generateDirectedGraph(SortedSet<Integer> sortedAdapters) {
-        final List<Integer> adapters = List.copyOf(sortedAdapters);
+    static Graph<Integer, DefaultEdge> generateDirectedGraph(SortedSet<Integer> sortedAdapters) {
+        final List<Integer> adapters = Stream.concat(Stream.of(0), sortedAdapters.stream()).toList();
         final Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
         for (int i = 0; i < adapters.size() - 1; i++) {
             final List<Integer> others = adapters.subList(i + 1, adapters.size());

@@ -32,13 +32,13 @@ public class AdapterArray {
 
     public static void main(String[] args) throws IOException {
         final SortedSet<Integer> outputJoltage =
-                readFileToTreeSet("src/main/java/aoc/year2020/day10/test2.txt");
+                readFileToTreeSet("src/main/java/aoc/year2020/day10/output-joltage.txt");
         System.out.println(productOfJoltDifference(outputJoltage));
         System.out.println(findAllCombinationsOfAdapters(outputJoltage));
 
         final Graph<Integer, DefaultEdge> adapterGraph = generateDirectedGraph(outputJoltage);
         //visualizeGraph(adapterGraph); // Only for test data. Input data is too large.
-        System.out.println(countAllPaths(adapterGraph, outputJoltage));
+        //System.out.println(countAllPaths(adapterGraph, outputJoltage));
     }
 
     private static int productOfJoltDifference(SortedSet<Integer> sortedAdapters) {

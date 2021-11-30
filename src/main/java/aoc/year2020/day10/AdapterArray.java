@@ -1,9 +1,25 @@
 package aoc.year2020.day10;
 
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.util.mxCellRenderer;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
+import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -14,11 +30,15 @@ public class AdapterArray {
 
     private static final int CHARGING_OUTLET_RATING = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final SortedSet<Integer> outputJoltage =
-                readFileToTreeSet("src/main/java/aoc/year2020/day10/output-joltage.txt");
+                readFileToTreeSet("src/main/java/aoc/year2020/day10/test2.txt");
         System.out.println(productOfJoltDifference(outputJoltage));
         System.out.println(findAllCombinationsOfAdapters(outputJoltage));
+
+        final Graph<Integer, DefaultEdge> adapterGraph = generateDirectedGraph(outputJoltage);
+        //visualizeGraph(adapterGraph);
+        System.out.println(countAllPaths(adapterGraph, outputJoltage));
     }
 
     private static int productOfJoltDifference(SortedSet<Integer> sortedAdapters) {
@@ -54,15 +74,70 @@ public class AdapterArray {
         return combinations.get(sortedAdapters.last());
     }
 
+    /** The ratio of methods is shown below for different test data.
+     * findAllCombinationsOfAdapters() / countAllPaths()
+     * 36/24, 84/48, 240/132, 19208/10976
+     *
+     * The logic in countAllPaths() is not counting all combinations of paths. It may be a permutation
+     * vs combination issue.
+     *
+     * List<GraphPath<Integer, DefaultEdge>> longestPath =
+     *                 paths.getAllPaths(sortedAdapters.first(), sortedAdapters.last(), true, null);
+     *
+     * https://jgrapht.org/javadoc/org.jgrapht.core/org/jgrapht/alg/shortestpath/AllDirectedPaths.html
+     * The third argument, true, is for simple paths. If it is set to false, an upper bound must be used
+     * for the fourth argument to avoid infinite cycles.
+     */
+    static long countAllPaths(
+            Graph<Integer, DefaultEdge> directedGraph, SortedSet<Integer> sortedAdapters) {
+
+        final AllDirectedPaths<Integer, DefaultEdge> paths = new AllDirectedPaths<>(directedGraph);
+        final List<GraphPath<Integer, DefaultEdge>> longestPath =
+                paths.getAllPaths(sortedAdapters.first(), sortedAdapters.last(), true, null);
+
+        return longestPath.size();
+    }
+
+    private static Graph<Integer, DefaultEdge> generateDirectedGraph(SortedSet<Integer> sortedAdapters) {
+        final List<Integer> adapters = List.copyOf(sortedAdapters);
+        final Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+        for (int i = 0; i < adapters.size() - 1; i++) {
+            final List<Integer> others = adapters.subList(i + 1, adapters.size());
+            for (Integer other : others) {
+                if (other <= adapters.get(i) + 3) {
+                    directedGraph.addVertex(adapters.get(i));
+                    directedGraph.addVertex(other);
+                    directedGraph.addEdge(adapters.get(i), other);
+                }
+            }
+        }
+        return directedGraph;
+    }
+
+    private static void visualizeGraph(Graph<Integer, DefaultEdge> directedGraph) throws IOException {
+        JGraphXAdapter<Integer, DefaultEdge> graphAdapter = new JGraphXAdapter<>(directedGraph);
+
+        mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
+        layout.execute(graphAdapter.getDefaultParent());
+
+        BufferedImage image = mxCellRenderer.createBufferedImage(
+                graphAdapter, null, 2,
+                Color.WHITE, true, null);
+
+        File imgFile = new File("src/main/java/aoc/year2020/day10/graph.png");
+        ImageIO.write(image, "PNG", imgFile);
+    }
+
     private static SortedSet<Integer> readFileToTreeSet(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             SortedSet<Integer> adapters = stream.map(Integer::parseInt)
                     .collect(Collectors.toCollection(TreeSet::new));
             adapters.add(adapters.last() + 3);
-            return new TreeSet<>(adapters);
+            return Collections.unmodifiableSortedSet(new TreeSet<>(adapters));
         } catch (IOException e) {
             e.printStackTrace();
             return new TreeSet<>();
         }
     }
+
 }

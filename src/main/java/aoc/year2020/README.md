@@ -115,10 +115,15 @@ The challenge is sequence building. Take the previous number in the sequence, an
 before. If it has, next number is how far back the next most recent occurrence was. If not, next number 
 is 0. Optimize using a hash map. Find the 2020th and 30,000,000th number. 
 
+
 #### [Day 16](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day16)
+Part 1 is about removing invalid entries from the data, using the heuristic that they contain values that 
+don't fit any rule. In the second part of the challenge, we're asked to figure out which rule goes with 
+which column by finding an order of rules for which all values in the table are valid.
 
 
 #### [Day 17](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day17)
+¯\_(ツ)_/¯ 3-D modeling using glider pattern from Cantor's game of life.
 
 
 #### [Day 18](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day18)
@@ -137,9 +142,11 @@ MULTIPLY(0, "*");
 
 
 #### [Day 19](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day19)
+Implement an expression grammar.
 
 
 #### [Day 20](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day20)
+¯\_(ツ)_/¯ Assemble the pieces of an image.
 
 
 #### [Day 21](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day21)
@@ -148,15 +155,25 @@ sets consisting of ingredients known to contain it.
 
 
 #### [Day 22](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day22)
+The challenge involves playing a card game that has a simple set of rules. It involves keeping track 
+of two stacks of cards. The rules are simple: both players play one card from the top of their deck, highest 
+card wins, winning player keeps both cards.
+
+Part two involves a new rule that spans a separate game. The first algorithm is modified to use recursion
+to solve the sub-games the are created by the new rule.
 
 
 #### [Day 23](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day23)
-This day gave me problems because I hate using mutable data structures. I used a common implementation of
-a circular linked list and loathed at the constant mutation of Node references and public access of data fields.
+This part of the challenge involves a circular list of numbers, where each round of a game requires doing 
+some operation to them. Take the current pointer in the circular list, remove the next three numbers, find 
+another number anywhere in the list that is the next value smaller (excluding the numbers removed). 
+Then, re-insert the numbers at that point. This day gave me problems because I hate using mutable data 
+structures. I used a common implementation of a circular linked list and loathed at the constant mutation 
+of Node references and public access of data fields.
 
 
 #### [Day 24](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day24)
 
 
 #### [Day 25](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day25)
-
+Brute-forcing a pseudorandom number generator. It is somewhat reminiscent of public key cryptography.

@@ -7,7 +7,6 @@ The first part is a common problem named TwoSum. The naive solution is brute for
 to check each value added to the others. It can be done in one pass using a Map 
 to store the difference.
 
-
 The second part is a continuation of the first: ThreeSum. Brute force for all three 
 values works, but a better O(n^2) solution is to sort the list of numbers. Starting 
 at `index 0`, while using two additional indexes, `index + 1` and `list.length() - 1`, walk 
@@ -15,18 +14,18 @@ the two pointers towards each other taking advantage of the sorted order.
 
 
 #### [Day 2](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day2)
-String processing. I split the data `"4-15 h: gcxfgbpbghdtrkhn"` into a tuple by white
-space and followed the validation rules.
+String processing. I split the data `"4-15 h: gcxfgbpbghdtrkhn"` into a tuple by white space, created 
+a Password object to encapsulate the four fields and followed the validation rules.
 
 
 #### [Day 3](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day3)
 Day 3 can be summed up with this line of code. `.filter(i -> grid[i][i * x % grid[0].length] == (int) '#')`.
-Navigate through a grid with and count the times you hit a tree ('#'). I used the int values
+Navigate through a grid with and count the times you hit a tree `'#'`. I used the int values
 of the Characters in the input Strings because it was easier to stream them into an `int[][]`. 
 
 
 #### [Day 4](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day4)
-Validating a passport with regex.
+Validating a passport with regex. This took more time than I wanted.
 ```
 private static final Map<String, String> PASSPORT_POLICY = Map.of(
             "byr", "^(19[2-9][0-9]|200[0-2])$",
@@ -68,7 +67,9 @@ of any two of the 25 immediately previous numbers.
 #### [Day 10](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day10)
 In a list of numbers, find the differences between consecutive items, and multiplying how many of those 
 differences are 1 with how many of those differences are 3. Then, calculate (brute-force) every single 
-combination and check that none have a difference greater than 3
+combination and check that none have a difference greater than 3. I later created a graph representation
+of the adapters and their possible neighbors to optimize the brute force approach. The graph works on the 
+test data but uses too much heap space to run on the input data.
 
 
 #### [Day 11](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day11)
@@ -77,8 +78,8 @@ to classify the state of a seat (FLOOR, EMPTY, OCCUPIED).
 
 
 #### [Day 12](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day12)
-Move a ferry based on a set of instructions. Uses the GridPosition record to model cartesian coordinates.
-Uses an enum Orientation (NORTH, EAST, SOUTH, WEST) to classify direction.
+Move a ferry based on a set of instructions. Uses the `GridPosition` record to model cartesian coordinates.
+Uses an enum `Orientation` (NORTH, EAST, SOUTH, WEST) to classify direction.
 
 
 #### [Day 13](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day13)
@@ -110,7 +111,9 @@ I resorted to looping through each index of the bitmask for bitwise comparison.
 
 
 #### [Day 15](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day15)
-
+The challenge is sequence building. Take the previous number in the sequence, and see if it has occurred 
+before. If it has, next number is how far back the next most recent occurrence was. If not, next number 
+is 0. Optimize using a hash map. Find the 2020th and 30,000,000th number. 
 
 #### [Day 16](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day16)
 

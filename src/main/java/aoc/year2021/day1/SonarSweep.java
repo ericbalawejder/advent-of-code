@@ -11,14 +11,15 @@ public class SonarSweep {
         final String path = "src/main/java/aoc/year2021/day1/sonar-sweep-report.txt";
         final List<Integer> sonarSweepReport = readFile(path);
         System.out.println(countIncreaseInDepth(sonarSweepReport));
+        System.out.println(countContiguousIncreaseInDepth(sonarSweepReport, 1));
         System.out.println(countContiguousIncreaseInDepth(sonarSweepReport, 3));
     }
 
     static int countContiguousIncreaseInDepth(List<Integer> sonarSweepReport, int length) {
         int count = 0;
         for (int i = 1; i < sonarSweepReport.size() - length + 1; i++) {
-            final List<Integer> previous = sonarSweepReport.subList(i - 1, i + 2);
-            final List<Integer> current = sonarSweepReport.subList(i, i + 3);
+            final List<Integer> previous = sonarSweepReport.subList(i - 1, i + length - 1);
+            final List<Integer> current = sonarSweepReport.subList(i, i + length);
             if (sum(current) > sum(previous)) {
                 count++;
             }

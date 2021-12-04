@@ -19,13 +19,13 @@ public class Dive {
         int depth = 0;
         int aim = 0;
         for (Instruction command : commands) {
-            switch (command.command()) {
-                case "forward" -> {
+            switch (command.direction()) {
+                case FORWARD -> {
                     horizontalPosition += command.distance();
                     depth += aim * command.distance();
                 }
-                case "down" -> aim += command.distance();
-                case "up" -> aim -= command.distance();
+                case DOWN -> aim += command.distance();
+                case UP -> aim -= command.distance();
                 default -> throw new IllegalArgumentException("Bad command");
             }
         }
@@ -36,10 +36,10 @@ public class Dive {
         int horizontalPosition = 0;
         int depth = 0;
         for (Instruction command : commands) {
-            switch (command.command()) {
-                case "forward" -> horizontalPosition += command.distance();
-                case "down" -> depth += command.distance();
-                case "up" -> depth -= command.distance();
+            switch (command.direction()) {
+                case FORWARD -> horizontalPosition += command.distance();
+                case DOWN -> depth += command.distance();
+                case UP -> depth -= command.distance();
                 default -> throw new IllegalArgumentException("Bad command");
             }
         }
@@ -49,7 +49,9 @@ public class Dive {
     private static List<Instruction> readFile(String path) throws IOException {
         return Files.lines(Paths.get(path))
                 .map(s -> s.split(" "))
-                .map(a -> new Instruction(a[0], Integer.parseInt(a[1])))
+                .map(a -> new Instruction(
+                        Direction.valueOf(a[0].toUpperCase()),
+                        Integer.parseInt(a[1])))
                 .toList();
     }
 

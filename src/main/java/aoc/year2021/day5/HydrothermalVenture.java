@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,34 +19,25 @@ public class HydrothermalVenture {
     }
 
     static int countOverlapWithDiagonals(List<Line> lines) {
-        final Map<Point, Integer> pointCount = lines.stream()
-                .filter(Line::isVerticalOrHorizontalOrDiagonal)
-                .map(HydrothermalVenture::generateAllPointsOnLine)
-                .toList()
-                .stream()
-                .flatMap(List::stream)
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.reducing(0, e -> 1, Integer::sum)));
-
-        return (int) pointCount.values()
-                .stream()
-                .filter(v -> v > 1)
-                .count();
+        return generateAllPointsFromLines(lines.stream()
+                .filter(Line::isVerticalOrHorizontalOrDiagonal));
     }
 
     static int countOverlap(List<Line> lines) {
-        final Map<Point, Integer> pointCount = lines.stream()
-                .filter(Line::isVerticalOrHorizontal)
+        return generateAllPointsFromLines(lines.stream()
+                .filter(Line::isVerticalOrHorizontal));
+    }
+
+    private static int generateAllPointsFromLines(Stream<Line> lineStream) {
+        return (int) lineStream
                 .map(HydrothermalVenture::generateAllPointsOnLine)
                 .toList()
                 .stream()
                 .flatMap(List::stream)
                 .collect(Collectors.groupingBy(
                         Function.identity(),
-                        Collectors.reducing(0, e -> 1, Integer::sum)));
-
-        return (int) pointCount.values()
+                        Collectors.reducing(0, e -> 1, Integer::sum)))
+                .values()
                 .stream()
                 .filter(v -> v > 1)
                 .count();

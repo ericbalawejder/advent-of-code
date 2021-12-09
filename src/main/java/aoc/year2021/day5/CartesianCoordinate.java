@@ -10,6 +10,10 @@ public class CartesianCoordinate {
         this.grid = new int[xLength][yLength];
     }
 
+    public CartesianCoordinate(CartesianCoordinate system) {
+        this.grid = system.getGrid();
+    }
+
     public int[][] getGrid() {
         return grid;
     }

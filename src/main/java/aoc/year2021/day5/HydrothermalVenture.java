@@ -4,29 +4,33 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HydrothermalVenture {
 
-    //5092
     public static void main(String[] args) {
-        //final String path = "src/main/java/aoc/year2021/day5/test.txt";
         final String path = "src/main/java/aoc/year2021/day5/lines-of-vents.txt";
         final List<Line> lines = getLines(path);
         System.out.println(countOverlap(lines));
         System.out.println(countOverlapWithDiagonals(lines));
     }
 
-    private static int countOverlapWithDiagonals(List<Line> lines) {
-        final Map<Point, Integer> pointCount = new HashMap<>();
-        lines.stream()
+    static int countOverlapWithDiagonals(List<Line> lines) {
+        final Map<Point, Integer> pointCount = lines.stream()
                 .filter(Line::isVerticalOrHorizontalOrDiagonal)
-                .forEach(line -> addPoints(pointCount, line));
+                .map(HydrothermalVenture::generateAllPoints)
+                .toList()
+                .stream()
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.reducing(0, e -> 1, Integer::sum)));
 
         return (int) pointCount.values()
                 .stream()
@@ -34,31 +38,30 @@ public class HydrothermalVenture {
                 .count();
     }
 
-    private static int countOverlap(List<Line> lines) {
-
-        final Map<Point, Integer> pointCount = new HashMap<>();
-        lines.stream()
-                .filter(Line::isVerticalOrHorizontal)
-                .forEach(line -> addPoints(pointCount, line));
-
-         /*
+    static int countOverlap(List<Line> lines) {
         final Map<Point, Integer> pointCount = lines.stream()
                 .filter(Line::isVerticalOrHorizontal)
-                .collect(Collectors.toMap());
+                .map(HydrothermalVenture::generateAllPoints)
+                .toList()
+                .stream()
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.reducing(0, e -> 1, Integer::sum)));
 
-         */
         return (int) pointCount.values()
                 .stream()
                 .filter(v -> v > 1)
                 .count();
     }
 
-    private static void addPoints(Map<Point, Integer> pointCount, Line line) {
+    private static List<Point> generateAllPoints(Line line) {
         final Point step = new Point((int) Math.signum(line.x2() - line.x1()),
                 (int) Math.signum(line.y2() - line.y1()));
 
-        Stream.iterate(new Point(line.x1(), line.y1()), point -> point.plus(step)).limit(line.length())
-                .forEach(point -> pointCount.compute(point, (k, v) -> (v == null) ? 1 : v + 1));
+        return Stream.iterate(new Point(line.x1(), line.y1()), point -> point.add(step))
+                .limit(line.length())
+                .toList();
     }
 
     private static List<Line> getLines(String path) {

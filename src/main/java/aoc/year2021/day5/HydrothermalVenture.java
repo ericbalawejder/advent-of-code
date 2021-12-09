@@ -56,10 +56,10 @@ public class HydrothermalVenture {
     }
 
     private static List<Point> generateAllPoints(Line line) {
-        final Point step = new Point((int) Math.signum(line.x2() - line.x1()),
-                (int) Math.signum(line.y2() - line.y1()));
+        final Point step = new Point((int) Math.signum(line.b().x() - line.a().x()),
+                (int) Math.signum(line.b().y() - line.a().y()));
 
-        return Stream.iterate(new Point(line.x1(), line.y1()), point -> point.add(step))
+        return Stream.iterate(new Point(line.a().x(), line.a().y()), point -> point.add(step))
                 .limit(line.length())
                 .toList();
     }
@@ -85,8 +85,7 @@ public class HydrothermalVenture {
         final int x2 = Integer.parseInt(matcher.group(3));
         final int y2 = Integer.parseInt(matcher.group(4));
 
-        //new Point(x1, y1), new Point(x2, y2)
-        return new Line(x1, y1, x2, y2);
+        return new Line(new Point(x1, y1), new Point(x2, y2));
     }
 
     /* Uses Points in Line

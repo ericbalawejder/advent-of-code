@@ -1,10 +1,9 @@
 package aoc.year2021.day5;
 
-// public record Line(Point a, Point b) {
-public record Line(int x1, int y1, int x2, int y2) {
+public record Line(Point a, Point b) {
 
     public boolean isVerticalOrHorizontal() {
-        return x1 == x2 || y1 == y2;
+        return a().x() == b().x() || a().y() == b().y();
     }
 
     public boolean isVerticalOrHorizontalOrDiagonal() {
@@ -12,11 +11,13 @@ public record Line(int x1, int y1, int x2, int y2) {
     }
 
     public boolean isDiagonal() {
-        return Math.abs(x1 - x2) == Math.abs(y1 - y2);
+        return Math.abs(a().x() - b().x()) == Math.abs(a().y() - b().y());
     }
 
     public int length() {
-        final int manhattanDistance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+        final int manhattanDistance =
+                Math.abs(a().x() - b().x()) + Math.abs(a().y() - b().y());
+
         return isDiagonal() ? manhattanDistance / 2 + 1 : manhattanDistance + 1;
     }
 

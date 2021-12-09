@@ -1,4 +1,4 @@
-package aoc.year2021.day5;
+package aoc.utils;
 
 import java.util.Arrays;
 

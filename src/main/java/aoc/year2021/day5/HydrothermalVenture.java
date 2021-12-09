@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +22,7 @@ public class HydrothermalVenture {
     static int countOverlapWithDiagonals(List<Line> lines) {
         final Map<Point, Integer> pointCount = lines.stream()
                 .filter(Line::isVerticalOrHorizontalOrDiagonal)
-                .map(HydrothermalVenture::generateAllPoints)
+                .map(HydrothermalVenture::generateAllPointsOnLine)
                 .toList()
                 .stream()
                 .flatMap(List::stream)
@@ -41,7 +39,7 @@ public class HydrothermalVenture {
     static int countOverlap(List<Line> lines) {
         final Map<Point, Integer> pointCount = lines.stream()
                 .filter(Line::isVerticalOrHorizontal)
-                .map(HydrothermalVenture::generateAllPoints)
+                .map(HydrothermalVenture::generateAllPointsOnLine)
                 .toList()
                 .stream()
                 .flatMap(List::stream)
@@ -55,40 +53,17 @@ public class HydrothermalVenture {
                 .count();
     }
 
-    private static List<Point> generateAllPoints(Line line) {
+    private static List<Point> generateAllPointsOnLine(Line line) {
         final Point step = new Point((int) Math.signum(line.b().x() - line.a().x()),
                 (int) Math.signum(line.b().y() - line.a().y()));
 
-        return Stream.iterate(new Point(line.a().x(), line.a().y()), point -> point.add(step))
+        final Point startPoint = new Point(line.a().x(), line.a().y());
+
+        return Stream.iterate(startPoint, point -> point.add(step))
                 .limit(line.length())
                 .toList();
     }
 
-    private static List<Line> getLines(String path) {
-        try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            return stream.map(HydrothermalVenture::getLine)
-                    .toList();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
-
-    private static Line getLine(String line) {
-        final Pattern linePattern = Pattern.compile("^(\\d+),(\\d+) -> (\\d+),(\\d+)$");
-        final Matcher matcher = linePattern.matcher(line);
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException("bad line input: " + line);
-        }
-        final int x1 = Integer.parseInt(matcher.group(1));
-        final int y1 = Integer.parseInt(matcher.group(2));
-        final int x2 = Integer.parseInt(matcher.group(3));
-        final int y2 = Integer.parseInt(matcher.group(4));
-
-        return new Line(new Point(x1, y1), new Point(x2, y2));
-    }
-
-    /* Uses Points in Line
     private static List<Line> getLines(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.map(s -> s.replace(" -> ", " "))
@@ -111,6 +86,32 @@ public class HydrothermalVenture {
                         new Point(Integer.parseInt(a[0]), Integer.parseInt(a[1])),
                         new Point(Integer.parseInt(a[2]), Integer.parseInt(a[3]))))
                 .toList();
+    }
+
+    /*
+    // Get data using regex
+    private static List<Line> getLines(String path) {
+        try (Stream<String> stream = Files.lines(Paths.get(path))) {
+            return stream.map(HydrothermalVenture::getLine)
+                    .toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    private static Line getLine(String line) {
+        final Pattern linePattern = Pattern.compile("^(\\d+),(\\d+) -> (\\d+),(\\d+)$");
+        final Matcher matcher = linePattern.matcher(line);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("bad line input: " + line);
+        }
+        final int x1 = Integer.parseInt(matcher.group(1));
+        final int y1 = Integer.parseInt(matcher.group(2));
+        final int x2 = Integer.parseInt(matcher.group(3));
+        final int y2 = Integer.parseInt(matcher.group(4));
+
+        return new Line(new Point(x1, y1), new Point(x2, y2));
     }
      */
 

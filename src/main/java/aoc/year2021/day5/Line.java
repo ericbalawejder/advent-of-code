@@ -2,12 +2,12 @@ package aoc.year2021.day5;
 
 public record Line(Point a, Point b) {
 
-    public boolean isVerticalOrHorizontal() {
-        return a().x() == b().x() || a().y() == b().y();
-    }
-
     public boolean isVerticalOrHorizontalOrDiagonal() {
         return isVerticalOrHorizontal() || isDiagonal();
+    }
+
+    public boolean isVerticalOrHorizontal() {
+        return a().x() == b().x() || a().y() == b().y();
     }
 
     public boolean isDiagonal() {

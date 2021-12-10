@@ -29,8 +29,8 @@ public class BinaryDiagnostic {
             binary.append((count > majorityBit ? "1" : "0"));
         }
         final String binaryGammaRate = binary.toString();
-        final int gammaRate = Integer.parseInt(binaryGammaRate, 2);
         final int epsilonRate = onesComplement(binaryGammaRate);
+        final int gammaRate = Integer.parseInt(binaryGammaRate, 2);
         return gammaRate * epsilonRate;
     }
 

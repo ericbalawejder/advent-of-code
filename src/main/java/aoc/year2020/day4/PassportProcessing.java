@@ -39,22 +39,25 @@ class PassportProcessing {
                 .count();
     }
 
-    private static boolean isPresent(String[] passport){
+    private static boolean isPresentAndValid(String[] passport) {
+        return isPresent(passport) && isValid(passport);
+    }
+
+    private static boolean isPresent(String[] passport) {
         return Arrays.stream(passport)
                 .map(s -> s.substring(0, 3))
                 .collect(Collectors.toUnmodifiableSet())
                 .containsAll(PASSPORT_POLICY.keySet());
     }
 
-    private static boolean isPresentAndValid(String[] passport){
-        return isPresent(passport) &&
-                Arrays.stream(passport)
+    private static boolean isValid(String[] passport) {
+        return Arrays.stream(passport)
                 .map(s -> s.split(":"))
                 .allMatch(s -> matchesRegex(s[0], s[1]));
     }
 
-    private static boolean matchesRegex(String key, String value){
-        if(!PASSPORT_POLICY.containsKey(key)) { // ¯\_(ツ)_/¯ handles cid
+    private static boolean matchesRegex(String key, String value) {
+        if (!PASSPORT_POLICY.containsKey(key)) { // ¯\_(ツ)_/¯ handles cid
             return true;
         }
         final Pattern pattern = Pattern.compile(PASSPORT_POLICY.get(key));

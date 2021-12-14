@@ -32,24 +32,19 @@ public class SevenSegmentSearch {
                 .count();
     }
 
-    static int sumDecodedOutputValues(List<List<String>> signalPatterns, List<List<String>> outputValues) {
-        return decodeOutputValues(signalPatterns, outputValues)
+    static int sumDecodedOutputValues(
+            List<List<String>> signalPatterns, List<List<String>> outputValues) {
+
+        return IntStream.range(0, signalPatterns.size())
+                .mapToObj(i -> decodeOutput(signalPatterns.get(i), outputValues.get(i)))
+                .toList()
                 .stream()
                 .map(Integer::parseInt)
                 .reduce(0, Integer::sum);
     }
 
-    private static List<String> decodeOutputValues(
-            List<List<String>> signalPatterns, List<List<String>> outputValues) {
-
-        return IntStream.range(0, signalPatterns.size())
-                .mapToObj(i -> decodeOutput(signalPatterns.get(i), outputValues.get(i)))
-                .toList();
-    }
-
     private static String decodeOutput(List<String> signalPatterns, List<String> outputValues) {
-        final Map<String, Set<Character>> signalValues =
-                new HashMap<>(decodeSignalValues(signalPatterns));
+        final Map<String, Set<Character>> signalValues = decodeSignalValues(signalPatterns);
 
         return outputValues.stream()
                 .map(s -> getKeysByValue(signalValues, stringToSet(s)))
@@ -57,6 +52,8 @@ public class SevenSegmentSearch {
                 .collect(Collectors.joining());
     }
 
+    // Using the map from decodeUniqueSignalValues(), use deduction based on the known patterns
+    // from the digits (1, 4, 7, 8) to find the unknown digits and place them in the map.
     private static Map<String, Set<Character>> decodeSignalValues(List<String> signalPatterns) {
         final Map<String, Set<Character>> signalValues =
                 new HashMap<>(decodeUniqueSignalValues(signalPatterns));
@@ -93,6 +90,7 @@ public class SevenSegmentSearch {
         return Map.copyOf(signalValues);
     }
 
+    // Place the known digits in the map with their known values.
     private static Map<String, Set<Character>> decodeUniqueSignalValues(List<String> signalPatterns) {
         final Map<String, Set<Character>> signalValues = new HashMap<>();
         for (String signal : signalPatterns) {
@@ -174,11 +172,20 @@ public class SevenSegmentSearch {
         }
     }
 
-    private static List<List<String>> readFile(String path) {
+    /**
+     * Teeing collector to two lists.
+     * return List<List<String>> containing -> List.of(signalPatterns, outputValues)
+     * @return
+     */
+    private static List<List<List<String>>> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             return stream.map(s -> s.split(" \\| "))
                     .map(Arrays::asList)
-                    .toList();
+                    .collect(Collectors.teeing(
+                            Collectors.toList(),
+                            Collectors.toList(),
+                            List::of
+                            ));
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();

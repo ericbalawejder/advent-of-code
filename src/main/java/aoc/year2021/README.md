@@ -12,9 +12,15 @@ case for the latest Java 17 switch statement and record construct.
 
 
 #### [Day 3](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day3)
+Part one appeared to be bit manipulation of a list of binary numbers. I converted the binary string to 
+an integer and used bit shifting to find values based on a set of rules. For part two, I had to change 
+my approach to using string manipulation of the binary numbers because the rules involved discarding 
+the binary string from a list which made the logic complicated.
 
 
 #### [Day 4](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day4)
+Play a game of Bingo with a squid. Most of the logic revolves around the GameCard class which simulates
+a mutable grid of numbers. Each time a number is called, cross off the number called and check for a winner.
 
 
 #### [Day 5](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day5)
@@ -33,3 +39,45 @@ fish. Then, roll the array with modulus array length.
 
 
 #### [Day 7](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day7)
+This was an optimization problem. Sort the list of numbers and find the median. I initially failed because
+I was using the mode as the optimal point instead. Since the median is a float, find both int values and
+calculate the sum based on a distance function the crabs have to move. The distance function for part 1 is
+linear. Use the min of the two. For part two, the distance function is sigmaN and requires using the means
+as the optimal point. Since the list has an even size, there are two median values. Apply the distance
+function to each value and take the min.
+
+
+#### [Day 8](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day8)
+A signal pattern is a scrambled string. The scrambled string represents one of ten numbers. Count the 
+number of unique signal patterns by their length. A pattern of length two represents the number 1. 
+A pattern of length three represents a 7...length four is 4 and length seven is 8.
+```
+  0:      1:      2:      3:      4:
+ aaaa    ....    aaaa    aaaa    ....
+b    c  .    c  .    c  .    c  b    c
+b    c  .    c  .    c  .    c  b    c
+ ....    ....    dddd    dddd    dddd
+e    f  .    f  e    .  .    f  .    f
+e    f  .    f  e    .  .    f  .    f
+ gggg    ....    gggg    gggg    ....
+
+  5:      6:      7:      8:      9:
+ aaaa    aaaa    aaaa    aaaa    aaaa
+b    .  b    .  .    c  b    c  b    c
+b    .  b    .  .    c  b    c  b    c
+ dddd    dddd    ....    dddd    dddd
+.    f  e    f  .    f  e    f  .    f
+.    f  e    f  .    f  e    f  .    f
+ gggg    gggg    ....    gggg    gggg
+```
+Once we have four of the ten numbers, we need to find the remaining six. There are three signals of 
+length five and three signals of length six. Based on the segment layout above, use deduction with 
+set operations to determine the unknown signals. Once all ten signal patterns are known, decode
+a different set of signals (referred to as output values) and sum their numeric values.
+
+
+#### [Day 9](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day9)
+
+
+TODO
+Combine day3 part1 and part2 via string manipulation.

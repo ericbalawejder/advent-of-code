@@ -47,7 +47,7 @@ public class SevenSegmentSearch {
         final Map<String, Set<Character>> signalValues = decodeSignalValues(signalPatterns);
 
         return outputValues.stream()
-                .map(s -> getKeysByValue(signalValues, stringToSet(s)))
+                .map(s -> getKeysByValue(signalValues, stringToCharacterSet(s)))
                 .flatMap(Set::stream)
                 .collect(Collectors.joining());
     }
@@ -59,22 +59,16 @@ public class SevenSegmentSearch {
                 new HashMap<>(decodeUniqueSignalValues(signalPatterns));
         for (String signal : signalPatterns) {
             if (signal.length() == 5) {
-                final Set<Character> digit = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> digit = stringToCharacterSet(signal);
                 if (digit.containsAll(signalValues.get("1"))) {
                     signalValues.put("3", digit);
                 } else if (digit.containsAll(difference(signalValues.get("4"), signalValues.get("1")))) {
                     signalValues.put("5", digit);
                 } else if (digit.containsAll(difference(signalValues.get("8"), signalValues.get("4")))) {
                     signalValues.put("2", digit);
-                } else {
-                    throw new IllegalArgumentException("logic error");
                 }
             } else if (signal.length() == 6) {
-                final Set<Character> digit = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> digit = stringToCharacterSet(signal);
                 if (digit.containsAll(signalValues.get("4"))) {
                     signalValues.put("9", digit);
                 } else if (digit.containsAll(difference(signalValues.get("8"), signalValues.get("1")))) {
@@ -82,8 +76,6 @@ public class SevenSegmentSearch {
                 } else if (digit.containsAll(
                         union(difference(signalValues.get("8"), signalValues.get("4")), signalValues.get("1")))) {
                     signalValues.put("0", digit);
-                } else {
-                    throw new IllegalArgumentException("logic error");
                 }
             }
         }
@@ -95,31 +87,23 @@ public class SevenSegmentSearch {
         final Map<String, Set<Character>> signalValues = new HashMap<>();
         for (String signal : signalPatterns) {
             if (signal.length() == 2) {
-                final Set<Character> one = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> one = stringToCharacterSet(signal);
                 signalValues.put("1", one);
             } else if (signal.length() == 3) {
-                final Set<Character> seven = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> seven = stringToCharacterSet(signal);
                 signalValues.put("7", seven);
             } else if (signal.length() == 4) {
-                final Set<Character> four = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> four = stringToCharacterSet(signal);
                 signalValues.put("4", four);
             } else if (signal.length() == 7) {
-                final Set<Character> eight = signal.chars()
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.toUnmodifiableSet());
+                final Set<Character> eight = stringToCharacterSet(signal);
                 signalValues.put("8", eight);
             }
         }
         return Map.copyOf(signalValues);
     }
 
-    private static Set<Character> stringToSet(String word) {
+    private static Set<Character> stringToCharacterSet(String word) {
         return word.chars()
                 .mapToObj(c -> (char) c)
                 .collect(Collectors.toUnmodifiableSet());
@@ -141,7 +125,7 @@ public class SevenSegmentSearch {
                 .stream()
                 .filter(entry -> Objects.equals(entry.getValue(), value))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static List<List<String>> getOutputValues(String path) {
@@ -173,9 +157,9 @@ public class SevenSegmentSearch {
     }
 
     /**
+     * TODO
      * Teeing collector to two lists.
      * return List<List<String>> containing -> List.of(signalPatterns, outputValues)
-     * @return
      */
     private static List<List<List<String>>> readFile(String path) {
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
@@ -185,7 +169,7 @@ public class SevenSegmentSearch {
                             Collectors.toList(),
                             Collectors.toList(),
                             List::of
-                            ));
+                    ));
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();

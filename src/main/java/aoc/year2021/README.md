@@ -48,9 +48,9 @@ function to each value and take the min.
 
 
 #### [Day 8](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day8)
-A signal pattern is a scrambled string. The scrambled string represents one of ten numbers. Count the 
-number of unique signal patterns by their length. A pattern of length two represents the number 1. 
-A pattern of length three represents a 7...length four is 4 and length seven is 8.
+Solving for constraints. A signal pattern is a scrambled string. The scrambled string represents one of 
+ten numbers. Count the number of unique signal patterns by their length. A pattern of length two represents 
+the number 1. A pattern of length three represents a 7...length four is 4 and length seven is 8.
 ```
   0:      1:      2:      3:      4:
  aaaa    ....    aaaa    aaaa    ....
@@ -77,7 +77,8 @@ a different set of signals (referred to as output values) and sum their numeric 
 
 
 #### [Day 9](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day9)
+Traverse a grid and find values based on a set of rules. I used a `record` `Coordinate(int x, int y)` 
+as a data holder for the point. The coordinate `(x, y)` of each point in the grid is used as the key and 
+the number at each point is the value in a hashmap. For part one, find all the low points in the grid and 
+take their sum. For part two, find all the basins in the grid and take the product of the three largest.
 
-
-TODO
-Combine day3 part1 and part2 via string manipulation.

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -36,10 +37,9 @@ public class SmokeBasin {
                 .stream()
                 .filter(coordinate -> isLowPoint(coordinate, heightMap))
                 .map(coordinate -> findBasin(coordinate, heightMap))
-                .distinct()
-                .sorted()
+                .map(Set::size)
+                .sorted(Comparator.reverseOrder())
                 .limit(3)
-                .map(Basin::size)
                 .reduce(1, Math::multiplyExact);
     }
 
@@ -50,27 +50,24 @@ public class SmokeBasin {
                 .allMatch(adjacent -> heightMap.get(coordinate) < heightMap.get(adjacent));
     }
 
-    private static Basin findBasin(Coordinate lowPoint, Map<Coordinate, Integer> heightMap) {
+    private static Set<Coordinate> findBasin(Coordinate lowPoint, Map<Coordinate, Integer> heightMap) {
         final Set<Coordinate> seen = new HashSet<>();
         final Queue<Coordinate> queue = new LinkedList<>();
-        final Basin basin = new Basin();
+        final Set<Coordinate> basin = new HashSet<>();
         seen.add(lowPoint);
         queue.add(lowPoint);
         basin.add(lowPoint);
         while (!queue.isEmpty()) {
             Coordinate next = queue.poll();
-            next.adjacent().forEach(coordinate -> {
-                if (heightMap.containsKey(coordinate) &&
-                        !seen.contains(coordinate) &&
-                        heightMap.get(coordinate) < 9) {
-                    seen.add(coordinate);
-                    queue.add(coordinate);
-                    basin.add(coordinate);
+            next.adjacent().forEach(c -> {
+                if (heightMap.containsKey(c) && !seen.contains(c) && heightMap.get(c) < 9) {
+                    seen.add(c);
+                    queue.add(c);
+                    basin.add(c);
                 }
             });
         }
-        // TODO: make immutable collection
-        return basin;
+        return Set.copyOf(basin);
     }
 
     private static Map<Coordinate, Integer> createHeightMap(String path) {

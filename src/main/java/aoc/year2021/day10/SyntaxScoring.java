@@ -36,8 +36,6 @@ public class SyntaxScoring {
     static int computeSyntaxErrorScore(List<String> lines) {
         return lines.stream()
                 .map(SyntaxScoring::getFirstIllegalCharacter)
-                .toList()
-                .stream()
                 .map(CHARACTER_SCORE::get)
                 .reduce(0, Integer::sum);
     }
@@ -58,8 +56,6 @@ public class SyntaxScoring {
     private static List<String> findClosingCharacters(List<String> lines) {
         return lines.stream()
                 .filter(l -> getFirstIllegalCharacter(l) == '0')
-                .toList()
-                .stream()
                 .map(SyntaxScoring::getRemainder)
                 .toList();
     }

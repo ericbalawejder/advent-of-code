@@ -37,8 +37,6 @@ public class SevenSegmentSearch {
 
         return IntStream.range(0, signalPatterns.size())
                 .mapToObj(i -> decodeOutput(signalPatterns.get(i), outputValues.get(i)))
-                .toList()
-                .stream()
                 .map(Integer::parseInt)
                 .reduce(0, Integer::sum);
     }
@@ -58,8 +56,8 @@ public class SevenSegmentSearch {
         final Map<String, Set<Character>> signalValues =
                 new HashMap<>(decodeUniqueSignalValues(signalPatterns));
         for (String signal : signalPatterns) {
+            final Set<Character> digit = stringToCharacterSet(signal);
             if (signal.length() == 5) {
-                final Set<Character> digit = stringToCharacterSet(signal);
                 if (digit.containsAll(signalValues.get("1"))) {
                     signalValues.put("3", digit);
                 } else if (digit.containsAll(difference(signalValues.get("4"), signalValues.get("1")))) {
@@ -68,7 +66,6 @@ public class SevenSegmentSearch {
                     signalValues.put("2", digit);
                 }
             } else if (signal.length() == 6) {
-                final Set<Character> digit = stringToCharacterSet(signal);
                 if (digit.containsAll(signalValues.get("4"))) {
                     signalValues.put("9", digit);
                 } else if (digit.containsAll(difference(signalValues.get("8"), signalValues.get("1")))) {
@@ -86,18 +83,15 @@ public class SevenSegmentSearch {
     private static Map<String, Set<Character>> decodeUniqueSignalValues(List<String> signalPatterns) {
         final Map<String, Set<Character>> signalValues = new HashMap<>();
         for (String signal : signalPatterns) {
+            final Set<Character> digit = stringToCharacterSet(signal);
             if (signal.length() == 2) {
-                final Set<Character> one = stringToCharacterSet(signal);
-                signalValues.put("1", one);
+                signalValues.put("1", digit);
             } else if (signal.length() == 3) {
-                final Set<Character> seven = stringToCharacterSet(signal);
-                signalValues.put("7", seven);
+                signalValues.put("7", digit);
             } else if (signal.length() == 4) {
-                final Set<Character> four = stringToCharacterSet(signal);
-                signalValues.put("4", four);
+                signalValues.put("4", digit);
             } else if (signal.length() == 7) {
-                final Set<Character> eight = stringToCharacterSet(signal);
-                signalValues.put("8", eight);
+                signalValues.put("8", digit);
             }
         }
         return Map.copyOf(signalValues);

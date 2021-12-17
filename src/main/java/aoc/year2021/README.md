@@ -39,7 +39,7 @@ fish. Then, roll the array with modulus array length.
 
 
 #### [Day 7](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day7)
-This was an optimization problem. Sort the list of numbers and find the median. I initially failed because
+This is an optimization problem. Sort the list of numbers and find the median. I initially failed because
 I was using the mode as the optimal point instead. Since the median is a float, find both int values and
 calculate the sum based on a distance function the crabs have to move. The distance function for part 1 is
 linear. Use the min of the two. For part two, the distance function is sigmaN and requires using the means
@@ -48,7 +48,7 @@ function to each value and take the min.
 
 
 #### [Day 8](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day8)
-Solving for constraints. A signal pattern is a scrambled string. The scrambled string represents one of 
+Solving for set constraints. A signal pattern is a scrambled string. The scrambled string represents one of 
 ten numbers. Count the number of unique signal patterns by their length. A pattern of length two represents 
 the number 1. A pattern of length three represents a 7...length four is 4 and length seven is 8.
 ```
@@ -82,3 +82,9 @@ as a data holder for the point. The coordinate `(x, y)` of each point in the gri
 the number at each point is the value in a hashmap. For part one, find all the low points in the grid and 
 take their sum. For part two, find all the basins in the grid and take the product of the three largest.
 
+
+#### [Day 10](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day10)
+Use a stack to check for matching delimiters `[({(<(())[]>[[{[]{<()<>>`. If a delimiter doesn't match, 
+return it and compute a score based on the value assigned to the delimiter. Some lines are incomplete
+because they don't contain enough right sided delimiters. For part two, find the incomplete lines and 
+complete the delimiter sequence. Compute a score based on the value of each delimiter required.

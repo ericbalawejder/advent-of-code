@@ -12,14 +12,14 @@ public class OctopusMap extends HashMap<Coordinate, Integer> {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    int step() {
-        Set<Coordinate> flashers = new HashSet<>();
-        Queue<Coordinate> toIncrease = new LinkedList<>(keySet());
+    public int step() {
+        final Set<Coordinate> flashers = new HashSet<>();
+        final Queue<Coordinate> toIncrease = new LinkedList<>(keySet());
         while (!toIncrease.isEmpty()) {
-            Coordinate top = toIncrease.poll();
+            final Coordinate top = toIncrease.poll();
             if (!flashers.contains(top)) {
-                var val = compute(top, (k, v) -> v == null ? null : v + 1);
-                if (val > 9) {
+                final Integer value = compute(top, (k, v) -> v == null ? null : v + 1);
+                if (value > 9) {
                     flashers.add(top);
                     top.adjacents()
                             .stream()
@@ -32,7 +32,7 @@ public class OctopusMap extends HashMap<Coordinate, Integer> {
         return flashers.size();
     }
 
-    boolean isSyncron() {
+    public boolean isSynchronized() {
         return values().stream().allMatch(i -> i == 0);
     }
 

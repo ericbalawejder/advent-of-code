@@ -14,8 +14,8 @@ case for the latest Java 17 switch statement and record construct.
 #### [Day 3](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day3)
 Part one appeared to be bit manipulation of a list of binary numbers. I converted the binary string to 
 an integer and used bit shifting to find values based on a set of rules. For part two, I had to change 
-my approach to using string manipulation of the binary numbers because the rules involved discarding 
-the binary string from a list which made the logic complicated.
+my approach to using string manipulation of the binary numbers because the rules involved comparing
+the next bit of the string until there was only one number left in the collection.
 
 
 #### [Day 4](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day4)
@@ -88,3 +88,10 @@ Use a stack to check for matching delimiters `[({(<(())[]>[[{[]{<()<>>`. If a de
 return it and compute a score based on the value assigned to the delimiter. Some lines are incomplete
 because they don't contain enough right sided delimiters. For part two, find the incomplete lines and 
 complete the delimiter sequence. Compute a score based on the value of each delimiter required.
+
+
+#### [Day 11](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day11)
+Apply rules to a 2-D array of values. Similar to a bingo card from day 4. I used the same `Coordinate`
+`record` from day 9 to model the grid of octopus energy levels. For part 1, apply 100 transformations
+of the grid and count how many times a 9 flips over to zero, called a flash. For part 2, find on what
+number transformation the grid becomes synchronized, defined as all zeros.

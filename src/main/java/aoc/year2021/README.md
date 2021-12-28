@@ -95,3 +95,20 @@ Apply rules to a 2-D array of values. Similar to a bingo card from day 4. I used
 `record` from day 9 to model the grid of octopus energy levels. For part 1, apply 100 transformations
 of the grid and count how many times a 9 flips over to zero, called a flash. For part 2, find on what
 number transformation the grid becomes synchronized, defined as all zeros.
+
+
+#### [Day 12](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day12)
+First graph problem on the calendar. For the cave mappings, `end` can't be a key and `start` can't be a value 
+in the hashmap representing the cave paths. This logic is seen in the `readCaves()` method. Then, recursively
+traverse the cave paths counting the number of paths from `start` to `end`, visiting the small caves only once.
+For part 2, repeat with allowing small caves to be visited at most twice. This is achieved with the `boolean`
+parameter `repeat` passed to the `countPaths()` method.
+
+
+#### [Day 13](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day13)
+Create another grid using the record `Coordinate` from previous problems. Follow the rules for folding the 
+transparent paper, or grid, at a horizontal or vertical line. This involves mapping the points on the paper 
+beyond the fold to under the fold. For part one, fold the paper once and count the points. For part 2, fold 
+the paper by the instructions in the data file and display the finished paper (grid) to reveal the code in 
+text.
+

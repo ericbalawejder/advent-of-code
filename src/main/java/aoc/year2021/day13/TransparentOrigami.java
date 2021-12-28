@@ -35,7 +35,7 @@ public class TransparentOrigami {
     }
 
     static Set<Coordinate> fold(Set<Coordinate> coordinates, Line line) {
-        return line.axis().equals("y") ? foldY(coordinates, line) : foldX(coordinates, line);
+        return line.axis().equals(Axis.Y) ? foldY(coordinates, line) : foldX(coordinates, line);
     }
 
     private static Set<Coordinate> foldX(Set<Coordinate> coordinates, Line line) {
@@ -105,7 +105,7 @@ public class TransparentOrigami {
                         .replace("fold along ", "")
                         .split("\n"))
                 .map(s -> s.split("="))
-                .map(a -> new Line(a[0], Integer.parseInt(a[1])))
+                .map(a -> new Line(Axis.valueOf(a[0].toUpperCase()), Integer.parseInt(a[1])))
                 .toList();
     }
 

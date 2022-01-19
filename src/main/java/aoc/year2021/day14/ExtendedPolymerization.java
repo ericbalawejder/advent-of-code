@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -31,21 +31,25 @@ public class ExtendedPolymerization {
         final Map<Character, Long> characterCount =
                 countPolymerCharacters(pairInsertionRules, polymerTemplate, steps);
 
-        final List<Map.Entry<Character, Long>> sorted = characterCount.entrySet()
+        final LinkedList<Map.Entry<Character, Long>> sorted = characterCount.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
-                .toList();
+                .collect(Collectors.toCollection(LinkedList::new));
 
-        return sorted.get(sorted.size() - 1).getValue() - sorted.get(0).getValue();
+        return sorted.getLast().getValue() - sorted.getFirst().getValue();
     }
 
     private static Map<Character, Long> countPolymerCharacters(Map<String, String> pairInsertionRules,
-                                                               String template,
+                                                               String polymerTemplate,
                                                                int steps) {
-        final Map<String, Long> pairCount = generatePolymer(pairInsertionRules, template, steps);
+        final Map<String, Long> pairCount = generatePolymer(pairInsertionRules, polymerTemplate, steps);
         final Map<Character, Long> characterCount = new HashMap<>();
-        characterCount.compute(template.charAt(0), (k, v) -> v == null ? 1L : v + 1L);
-        characterCount.compute(template.charAt(template.length() - 1), (k, v) -> v == null ? 1L : v + 1L);
+
+        // Place the first and last characters of the polymer in characterCount because the ends
+        // only get counted once. We divide by 2 below to get the true count when finished.
+        characterCount.put(polymerTemplate.charAt(0), 1L);
+        characterCount.put(polymerTemplate.charAt(polymerTemplate.length() - 1), 1L);
+
         pairCount.forEach((key, value) -> {
             characterCount.compute(key.charAt(0), (k, v) -> v == null ? value : v + value);
             characterCount.compute(key.charAt(1), (k, v) -> v == null ? value : v + value);

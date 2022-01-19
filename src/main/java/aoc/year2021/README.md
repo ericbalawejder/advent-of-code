@@ -33,9 +33,9 @@ counting the points that occur more than once `v -> v > 1` shows the overlapping
 
 #### [Day 6](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day6)
 This is an optimization problem. The first part allows you to build a list of elements and return the list
-size. Since the list growth is exponential, the second part list will become too large.(Tried passing heap 
-arguments -Xmx2G) Instead, use an array where the index is the fish number and the value is the number of 
-fish. Then, roll the array with modulus array length.
+size. Since the list growth is exponential, the second part list will become too large. I tried passing heap 
+arguments `-Xmx2G` but it wasn't enough. Instead, use an array where the index is the fish number and the 
+value is the number of fish. Then, roll the array with modulus array length.
 
 
 #### [Day 7](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day7)
@@ -112,3 +112,12 @@ beyond the fold to under the fold. For part one, fold the paper once and count t
 the paper by the instructions in the data file and display the finished paper (grid) to reveal the code in 
 text.
 
+
+#### [Day 14](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day14)
+This was an optimization problem similar to day 6. The polymer string grows exponentially and uses too much
+memory to represent as a string. I tried to increase the heap size for part 2 after implementing part 1 as
+a string and `Xmx2G` wasn't enough. Instead, use a hashmap to count each pair from the polymer created after 
+applying the rules. Add the first and last character of the polymer string to the map because they only get 
+counted once. Count all the characters from the keys of the map (pairs `NN`, `HB`, etc) and divide by two to 
+get their actual count. Sort the characters by value (`Long` count) and subtract the least (first) from the 
+largest (last).

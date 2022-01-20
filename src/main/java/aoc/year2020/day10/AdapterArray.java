@@ -37,7 +37,8 @@ public class AdapterArray {
         System.out.println(findAllCombinationsOfAdapters(outputJoltage));
 
         final Graph<Integer, DefaultEdge> adapterGraph = generateDirectedGraph(outputJoltage);
-        //visualizeGraph(adapterGraph); // Only for test data. Input data is too large.
+        visualizeGraph(adapterGraph);
+        // Only for test data. Input data is too large.
         //System.out.println(countAllPaths(adapterGraph, outputJoltage));
     }
 
@@ -103,16 +104,16 @@ public class AdapterArray {
     }
 
     private static void visualizeGraph(Graph<Integer, DefaultEdge> directedGraph) throws IOException {
-        JGraphXAdapter<Integer, DefaultEdge> graphAdapter = new JGraphXAdapter<>(directedGraph);
+        final JGraphXAdapter<Integer, DefaultEdge> graphAdapter = new JGraphXAdapter<>(directedGraph);
 
-        mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
+        final mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
         layout.execute(graphAdapter.getDefaultParent());
 
-        BufferedImage image = mxCellRenderer.createBufferedImage(
+        final BufferedImage image = mxCellRenderer.createBufferedImage(
                 graphAdapter, null, 2,
                 Color.WHITE, true, null);
 
-        File imgFile = new File("src/main/java/aoc/year2020/day10/graph.png");
+        final File imgFile = new File("src/main/java/aoc/year2020/day10/graph.png");
         ImageIO.write(image, "PNG", imgFile);
     }
 

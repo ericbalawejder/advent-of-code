@@ -67,9 +67,12 @@ of any two of the 25 immediately previous numbers.
 #### [Day 10](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day10)
 In a list of numbers, find the differences between consecutive items, and multiplying how many of those 
 differences are 1 with how many of those differences are 3. Then, calculate (brute-force) every single 
-combination and check that none have a difference greater than 3. I later created a graph representation
-of the adapters and their possible neighbors to optimize the brute force approach. The graph works on the 
-test data but uses too much heap space to run on the input data.
+combination and check that none have a difference greater than 3. I later created a graph representation, 
+using [JGraphT](https://jgrapht.org/), of the adapters and their possible neighbors to optimize the brute 
+force approach. The graph works on the test data but uses too much heap space (even with heap arguments `-Xmx2G`) 
+to run on the input data.
+
+![graph](/src/main/java/aoc/year2020/day10/graph.png)
 
 
 #### [Day 11](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day11)

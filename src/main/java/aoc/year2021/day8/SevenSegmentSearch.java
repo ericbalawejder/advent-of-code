@@ -18,8 +18,10 @@ public class SevenSegmentSearch {
 
   public static void main(String[] args) {
     final String path = "src/main/java/aoc/year2021/day8/signal-patterns.txt";
-    final List<List<String>> outputValues = getOutputValues(path);
-    final List<List<String>> signalPatterns = getSignalPatterns(path);
+    final List<List<List<String>>> signalAndOutputValues = getSignalAndOutputValues(path);
+    final List<List<String>> outputValues = signalAndOutputValues.get(1);
+    final List<List<String>> signalPatterns = signalAndOutputValues.get(0);
+
     System.out.println(countUniqueOutputValues(outputValues));
     System.out.println(sumDecodedOutputValues(signalPatterns, outputValues));
   }
@@ -27,14 +29,11 @@ public class SevenSegmentSearch {
   static int countUniqueOutputValues(List<List<String>> outputValues) {
     return (int) outputValues.stream()
         .flatMap(List::stream)
-        .filter(s -> s.length() == 2 || s.length() == 3 ||
-            s.length() == 4 || s.length() == 7)
+        .filter(s -> s.length() == 2 || s.length() == 3 || s.length() == 4 || s.length() == 7)
         .count();
   }
 
-  static int sumDecodedOutputValues(
-      List<List<String>> signalPatterns, List<List<String>> outputValues) {
-
+  static int sumDecodedOutputValues(List<List<String>> signalPatterns, List<List<String>> outputValues) {
     return IntStream.range(0, signalPatterns.size())
         .mapToObj(i -> decodeOutput(signalPatterns.get(i), outputValues.get(i)))
         .map(Integer::parseInt)
@@ -122,52 +121,24 @@ public class SevenSegmentSearch {
         .collect(Collectors.toUnmodifiableSet());
   }
 
-  private static List<List<String>> getOutputValues(String path) {
-    try (Stream<String> stream = Files.lines(Paths.get(path))) {
-      return stream.map(s -> s.split("\\|"))
-          .map(a -> a[1])
-          .map(String::trim)
-          .map(s -> s.split(" "))
-          .map(Arrays::asList)
-          .toList();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Collections.emptyList();
-    }
-  }
-
-  private static List<List<String>> getSignalPatterns(String path) {
-    try (Stream<String> stream = Files.lines(Paths.get(path))) {
-      return stream.map(s -> s.split("\\|"))
-          .map(a -> a[0])
-          .map(String::trim)
-          .map(s -> s.split(" "))
-          .map(Arrays::asList)
-          .toList();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Collections.emptyList();
-    }
-  }
-
-  /**
-   * TODO
-   * Teeing collector to two lists.
-   * return List<List<String>> containing -> List.of(signalPatterns, outputValues)
-   */
-  private static List<List<List<String>>> readFile(String path) {
+  private static List<List<List<String>>> getSignalAndOutputValues(String path) {
     try (Stream<String> stream = Files.lines(Paths.get(path))) {
       return stream.map(s -> s.split(" \\| "))
           .map(Arrays::asList)
-          .collect(Collectors.teeing(
-              Collectors.toList(),
-              Collectors.toList(),
-              List::of
-          ));
+          .collect(
+              Collectors.teeing(
+                  Collectors.mapping(list -> processLines(list.get(0)), Collectors.toList()),
+                  Collectors.mapping(list -> processLines(list.get(1)), Collectors.toList()),
+                  List::of
+              ));
     } catch (IOException e) {
       e.printStackTrace();
       return Collections.emptyList();
     }
+  }
+
+  private static List<String> processLines(String signals) {
+    return Arrays.stream(signals.trim().split(" ")).toList();
   }
 
 }

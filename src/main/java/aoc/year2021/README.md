@@ -15,7 +15,9 @@ case for the latest Java 17 switch statement and record construct.
 Part one appeared to be bit manipulation of a list of binary numbers. I converted the binary string to 
 an integer and used bit shifting to find values based on a set of rules. For part two, I had to change 
 my approach to using string manipulation of the binary numbers because the rules involved comparing
-the next bit of the string until there was only one number left in the collection.
+the next bit of the string until there was only one number left in the collection. This left leading zeros
+in the binary representation of the numbers `100101` -> `00101` after truncating the leading digit causing
+these values to parse improperly.
 
 
 #### [Day 4](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day4)

@@ -123,3 +123,10 @@ applying the rules. Add the first and last character of the polymer string to th
 counted once. Count all the characters from the keys of the map (pairs `NN`, `HB`, etc) and divide by two to 
 get their actual count. Sort the characters by value (`Long` count) and subtract the least (first) from the 
 largest (last).
+
+
+#### [Day 15](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day15)
+Create another grid using the record `Coordinate` from previous problems. Traverse the grid from top left to 
+bottom right using Dijkstra shortest path. I used a `Path` type to hold the current `Coordinate` as a well as 
+the sum of the cost/risk levels. Part 2 involves expanding the grid to 5 times the size and increasing each 
+risk by 1 and rolling a 9 value over to a 1. Then, apply the same method on the larger grid to escape the cave.

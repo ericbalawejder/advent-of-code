@@ -130,3 +130,11 @@ Create another grid using the record `Coordinate` from previous problems. Traver
 bottom right using Dijkstra shortest path. I used a `Path` type to hold the current `Coordinate` as a well as 
 the sum of the cost/risk levels. Part 2 involves expanding the grid to 5 times the size and increasing each 
 risk by 1 and rolling a 9 value over to a 1. Then, apply the same method on the larger grid to escape the cave.
+
+
+#### [Day 16](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day16)
+Convert a hexadecimal string to binary and parse the binary packet based on a set of rules. Create data carrier
+classes `LiteralValue` and `Operator` that are permitted to inherit from an abstract sealed class `Packet`. 
+An packet can be of two types: operator or literal. An operator packet can contain sub-packets of either type
+so we need to recursively parse the packets and store their types in a list. When finished parsing, sum the versions
+of the packets and calculate their value from field values.

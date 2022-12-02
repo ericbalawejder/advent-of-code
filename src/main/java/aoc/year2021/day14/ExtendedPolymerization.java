@@ -17,20 +17,16 @@ public class ExtendedPolymerization {
 
   public static void main(String[] args) throws IOException {
     final String path = "src/main/java/aoc/year2021/day14/pair-insertion-rules.txt";
-    final Optional<String> polymerTemplate = getPolymerTemplate(path);
+    final String polymerTemplate = getPolymerTemplate(path).orElseThrow();
     final Map<String, String> pairInsertionRules = getPairInsertionRules(path);
-    final long maxMinusMin1 = mostMinusLeast(pairInsertionRules, polymerTemplate.orElseThrow(), 10);
-    final long maxMinusMin2 = mostMinusLeast(pairInsertionRules, polymerTemplate.orElseThrow(), 40);
+    final long maxMinusMin1 = mostMinusLeast(pairInsertionRules, polymerTemplate, 10);
+    final long maxMinusMin2 = mostMinusLeast(pairInsertionRules, polymerTemplate, 40);
     System.out.println(maxMinusMin1);
     System.out.println(maxMinusMin2);
   }
 
-  static long mostMinusLeast(Map<String, String> pairInsertionRules,
-      String polymerTemplate,
-      int steps) {
-    final Map<Character, Long> characterCount =
-        countPolymerCharacters(pairInsertionRules, polymerTemplate, steps);
-
+  static long mostMinusLeast(Map<String, String> pairInsertionRules, String polymerTemplate, int steps) {
+    final Map<Character, Long> characterCount = countPolymerCharacters(pairInsertionRules, polymerTemplate, steps);
     final LinkedList<Map.Entry<Character, Long>> sorted = characterCount.entrySet()
         .stream()
         .sorted(Map.Entry.comparingByValue())
@@ -39,9 +35,8 @@ public class ExtendedPolymerization {
     return sorted.getLast().getValue() - sorted.getFirst().getValue();
   }
 
-  private static Map<Character, Long> countPolymerCharacters(Map<String, String> pairInsertionRules,
-      String polymerTemplate,
-      int steps) {
+  private static Map<Character, Long> countPolymerCharacters(
+      Map<String, String> pairInsertionRules, String polymerTemplate, int steps) {
     final Map<String, Long> pairCount = generatePolymer(pairInsertionRules, polymerTemplate, steps);
     final Map<Character, Long> characterCount = new HashMap<>();
 
@@ -60,9 +55,8 @@ public class ExtendedPolymerization {
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  private static Map<String, Long> generatePolymer(Map<String, String> pairInsertionRules,
-      String polymerTemplate,
-      int steps) {
+  private static Map<String, Long> generatePolymer(
+      Map<String, String> pairInsertionRules, String polymerTemplate, int steps) {
     final Map<String, Long> polymerTemplatePairCount = polymerTemplatePairCount(polymerTemplate);
     Map<String, Long> pairCount = new HashMap<>(polymerTemplatePairCount);
     for (int i = 0; i < steps; i++) {
@@ -87,17 +81,17 @@ public class ExtendedPolymerization {
   private static Map<String, Long> polymerTemplatePairCount(String polymerTemplate) {
     return IntStream.range(0, polymerTemplate.length() - 1)
         .mapToObj(i -> polymerTemplate.substring(i, i + 2))
-        .collect(Collectors.groupingBy(Function.identity(),
-            Collectors.counting()));
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
   }
 
   private static Map<String, String> getPairInsertionRules(String path) {
     try (Stream<String> stream = Files.lines(Paths.get(path))) {
       return stream.skip(2)
           .map(s -> s.split(" -> "))
-          .collect(Collectors.collectingAndThen(
-              Collectors.toMap(a -> a[0], a -> a[1]),
-              Collections::unmodifiableMap));
+          .collect(
+              Collectors.collectingAndThen(
+                  Collectors.toMap(a -> a[0], a -> a[1]),
+                  Collections::unmodifiableMap));
     } catch (IOException e) {
       e.printStackTrace();
       return Collections.emptyMap();

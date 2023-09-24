@@ -2,20 +2,26 @@ plugins {
     id 'java'
 }
 
-group 'com.aoc'
-version '1.0-SNAPSHOT'
+java {
+    setSourceCompatibility(JavaVersion.VERSION_21)
+}
+
+group {
+    setGroup('com.aoc')
+    setVersion('1.0-SNAPSHOT')
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
 
-    implementation 'org.jgrapht:jgrapht-core:1.5.1'
-    implementation 'org.jgrapht:jgrapht-ext:1.5.1'
-    implementation 'org.jgrapht:jgrapht-io:1.5.1'
+    implementation 'org.jgrapht:jgrapht-core:1.5.2'
+    implementation 'org.jgrapht:jgrapht-ext:1.5.2'
+    implementation 'org.jgrapht:jgrapht-io:1.5.2'
 
     //https://github.com/dpaukov/combinatoricslib3
     implementation 'com.github.dpaukov:combinatoricslib3:3.3.3'
@@ -28,4 +34,8 @@ test {
         showStandardStreams = true
         events = ["passed", "failed", "skipped"]
     }
+}
+
+wrapper {
+    gradleVersion = "8.3"
 }

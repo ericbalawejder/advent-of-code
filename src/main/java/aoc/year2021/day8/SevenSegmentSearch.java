@@ -52,8 +52,7 @@ public class SevenSegmentSearch {
   // Using the map from decodeUniqueSignalValues(), use deduction based on the known patterns
   // from the digits (1, 4, 7, 8) to find the unknown digits and place them in the map.
   private static Map<String, Set<Character>> decodeSignalValues(List<String> signalPatterns) {
-    final Map<String, Set<Character>> signalValues =
-        new HashMap<>(decodeUniqueSignalValues(signalPatterns));
+    final Map<String, Set<Character>> signalValues = new HashMap<>(decodeUniqueSignalValues(signalPatterns));
     for (String signal : signalPatterns) {
       final Set<Character> digit = stringToCharacterSet(signal);
       if (signal.length() == 5) {

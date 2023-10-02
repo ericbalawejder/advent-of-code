@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 public class SyntaxScoring {
@@ -43,14 +44,23 @@ public class SyntaxScoring {
   static long computeAutocompleteScore(List<String> lines) {
     final List<Long> scores = findClosingCharacters(lines)
         .stream()
-        .map(s -> s.chars()
-            .mapToObj(c -> (char) c)
-            .mapToLong(COMPLETION_SCORE::get)
-            .reduce(0L, (subtotal, element) -> 5 * subtotal + element))
+        .map(SyntaxScoring::computeScore)
         .sorted()
         .toList();
 
     return scores.get(scores.size() / 2);
+  }
+
+  private static long computeScore(String syntax) {
+    return syntax.chars()
+        .mapToObj(c -> (char) c)
+        .mapToLong(COMPLETION_SCORE::get)
+        .reduce(0L, SyntaxScoring::rule);
+  }
+
+  private static long rule(long s, long e) {
+    final BiFunction<Long, Long, Long> compute = (subtotal, element) -> 5 * subtotal + element;
+    return compute.apply(s, e);
   }
 
   private static List<String> findClosingCharacters(List<String> lines) {

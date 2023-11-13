@@ -10,8 +10,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.SequencedSet;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 class RucksackReorganization2 {
@@ -39,33 +39,28 @@ class RucksackReorganization2 {
 
   private static List<SequencedSet<Set<Character>>> getItemsInGroups(String path, int groupSize) {
     try (Stream<String> stream = Files.lines(Paths.get(path))) {
-      final List<String> items = stream.toList();
-      if (Math.floorMod(items.size(), groupSize) != 0) {
-        throw new IllegalArgumentException("group size");
-      }
-      final List<Set<String>> groups = new ArrayList<>();
-
-      IntStream.iterate(0, i -> i <= items.size() - groupSize, i -> i + groupSize)
-          .forEach(i -> groups.add(
-              items.subList(i, i + groupSize)
-                  .stream()
-                  .collect(Collectors.toUnmodifiableSet())));
-
-      return groups.stream()
-          .map(RucksackReorganization2::convertToCharacters)
-          .toList();
+      return stream.map(s -> s.chars()
+              .mapToObj(c -> (char) c)
+              .collect(Collectors.toUnmodifiableSet()))
+          .collect(Collector.of(
+              ArrayList::new,
+              (groups, element) -> {
+                if (groups.isEmpty() || groups.getLast().size() == groupSize) {
+                  final SequencedSet<Set<Character>> current = new LinkedHashSet<>();
+                  current.add(element);
+                  groups.addLast(current);
+                } else {
+                  groups.getLast().add(element);
+                }
+              },
+              (left, right) -> {
+                throw new UnsupportedOperationException("Cannot be parallelized");
+              }
+          ));
     } catch (IOException e) {
       e.printStackTrace();
       return Collections.emptyList();
     }
-  }
-
-  private static SequencedSet<Set<Character>> convertToCharacters(Set<String> groups) {
-    return groups.stream()
-        .map(s -> s.chars()
-            .mapToObj(c -> (char) c)
-            .collect(Collectors.toUnmodifiableSet()))
-        .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
 }

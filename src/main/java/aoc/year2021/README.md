@@ -135,6 +135,17 @@ risk by 1 and rolling a 9 value over to a 1. Then, apply the same method on the 
 #### [Day 16](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day16)
 Convert a hexadecimal string to binary and parse the binary packet based on a set of rules. Create data carrier
 classes `LiteralValue` and `Operator` that are permitted to inherit from an abstract sealed class `Packet`. 
-An packet can be of two types: operator or literal. An operator packet can contain sub-packets of either type
+A packet can be of two types: operator or literal. An operator packet can contain sub-packets of either type,
 so we need to recursively parse the packets and store their types in a list. When finished parsing, sum the versions
 of the packets and calculate their value from field values.
+
+
+#### [Day 17](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day17)
+Launching a probe into a target area. There seems to obviously be an algebraic solution to this problem but the initial 
+brute force approach will help us understand how to look at things. After brute forcing part one, we can see that the
+highest `y axis` value will be the sigma n summation of `abs(y min) - 1`, denoted by the first value given here 
+`y=-150..-108`, `y=-150`. Visualize this as a reflection from the lowest point of the target area over the `x-axis`. 
+We must subtract one because the way the probe trajectory is defined, there will always be an extra `x-axis` iteration 
+at the highest point, where `y = 0`, before the probe changes to negative velocity.
+
+Summation of n consecutive natural numbers is = n * (n + 1) / 2

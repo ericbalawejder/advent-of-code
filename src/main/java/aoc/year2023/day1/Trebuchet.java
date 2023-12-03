@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Trebuchet {
+class Trebuchet {
 
   public static void main(String... args) {
     final String path = "src/main/java/aoc/year2023/day1/calibration-document.txt";

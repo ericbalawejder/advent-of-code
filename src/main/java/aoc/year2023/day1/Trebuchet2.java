@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Trebuchet2 {
+class Trebuchet2 {
 
   private static final String REGEX = "(zero|one|two|three|four|five|six|seven|eight|nine|[0-9])";
   private static final Pattern FIRST_DIGIT = Pattern.compile(REGEX);

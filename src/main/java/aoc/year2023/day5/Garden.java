@@ -1,12 +1,21 @@
 package aoc.year2023.day5;
 
 import java.util.List;
+import java.util.Optional;
 
 record Garden(String name, List<Range> ranges) {
 
-  static int compute(int seed) {
+  long compute(long seed) {
+    return ranges.stream()
+        .map(range -> mapSeed(seed, range))
+        .flatMap(Optional::stream)
+        .findAny()
+        .orElse(seed);
+  }
 
-    return 0;
+  private Optional<Long> mapSeed(long seed, Range range) {
+    return seed >= range.sourceStart() && seed < range.sourceStart() + range.rangeLength() ?
+        Optional.of(seed - range.sourceStart() + range.destinationStart()) : Optional.empty();
   }
 
 }

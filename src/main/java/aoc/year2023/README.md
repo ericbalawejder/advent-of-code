@@ -29,3 +29,7 @@ on the brute force train forever as this took 31 minutes to execute. The
 [optimization](https://github.com/steven-terrana/advent-of-code/blob/main/2023/day05/latex.md) appears to be merging
 all the [piecewise](https://en.wikipedia.org/wiki/Piecewise) mapping functions into one. This would turn the `O(n)`
 computation into `O(1)`.
+
+#### [Day 6](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2023/day6)
+Use arithmetic to count the number of race wins. We only have to enumerate half of the total race time and subtract
+one if the race time is an even number.

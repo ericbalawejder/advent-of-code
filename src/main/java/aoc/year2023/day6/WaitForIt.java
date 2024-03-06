@@ -25,14 +25,14 @@ class WaitForIt {
     System.out.println(numberOfWins);
   }
 
-  public static long productOfWinningRaces(List<Race> races) {
+  static long productOfWinningRaces(List<Race> races) {
     return races.stream()
         .map(WaitForIt::runRace)
         .filter(i -> i > 0)
         .reduce(1L, Math::multiplyExact);
   }
 
-  public static long runRace(Race race) {
+  static long runRace(Race race) {
     return isRaceTimeEven(race) ? countWins(race) - 1 : countWins(race);
   }
 
@@ -64,6 +64,7 @@ class WaitForIt {
 
       return new Race(Long.parseLong(time), Long.parseLong(distance));
     } catch (IOException e) {
+      e.printStackTrace();
       return new Race(0, 0);
     }
   }
@@ -95,6 +96,7 @@ class WaitForIt {
           .mapToObj(i -> new Race(times.get(i), distances.get(i)))
           .toList();
     } catch (IOException e) {
+      e.printStackTrace();
       return Collections.emptyList();
     }
   }

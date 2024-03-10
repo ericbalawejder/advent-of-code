@@ -33,3 +33,7 @@ computation into `O(1)`.
 #### [Day 6](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2023/day6)
 Use arithmetic to count the number of race wins. We only have to enumerate half of the total race time and subtract
 one if the race time is an even number.
+
+#### [Day 7](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2023/day7)
+Leverage the type system with some object-oriented design. Generate custom `compareTo()` method to provide the proper
+ordering defined for the hands.

@@ -28,7 +28,7 @@ public class MapUtils {
         .stream()
         .filter(entry -> Objects.equals(entry.getValue(), value))
         .map(Map.Entry::getKey)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   public static Map<Character, Long> sortMapByValues(Map<Character, Long> map) {

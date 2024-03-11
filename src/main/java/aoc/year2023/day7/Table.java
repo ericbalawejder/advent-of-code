@@ -14,8 +14,6 @@ class CamelCards {
   public static void main(String... args) {
     final String path = "src/main/java/aoc/year2023/day7/camel-cards.txt";
     final List<CamelCard> camelCards = importCamelCards(path);
-    System.out.println(camelCards);
-
     final int totalWinnings = computeWinnings(camelCards);
     System.out.println(totalWinnings);
   }

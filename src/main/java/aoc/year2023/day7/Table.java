@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-class CamelCards {
+class Table {
 
   public static void main(String... args) {
     final String path = "src/main/java/aoc/year2023/day7/camel-cards.txt";

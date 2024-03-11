@@ -19,7 +19,8 @@ record Card(Character symbol) implements Comparable<Card> {
       Map.entry('5', 5),
       Map.entry('4', 4),
       Map.entry('3', 3),
-      Map.entry('2', 2));
+      Map.entry('2', 2)
+  );
 
   Card {
     if (!SYMBOLS.contains(symbol)) {

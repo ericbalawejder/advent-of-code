@@ -1,5 +1,12 @@
 package aoc.year2023.day7;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static aoc.year2023.day7.Type.FIVE_OF_A_KIND;
 import static aoc.year2023.day7.Type.FOUR_OF_A_KIND;
 import static aoc.year2023.day7.Type.FULL_HOUSE;
@@ -7,12 +14,6 @@ import static aoc.year2023.day7.Type.HIGH_CARD;
 import static aoc.year2023.day7.Type.ONE_PAIR;
 import static aoc.year2023.day7.Type.THREE_OF_A_KIND;
 import static aoc.year2023.day7.Type.TWO_PAIR;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 record Hand(List<Card> cards) implements Comparable<Hand> {
 
@@ -43,19 +44,17 @@ record Hand(List<Card> cards) implements Comparable<Hand> {
         .sorted()
         .toList();
 
-    return getKeysByValueT(TYPES, count);
+    return getKeysByValue(TYPES, count);
   }
 
   @Override
   public int compareTo(Hand hand) {
     if (this.getType().equals(hand.getType())) {
-      for (int i = 0; i < this.cards().size(); i++) {
-        final int compareValue = this.cards.get(i).getValue().compareTo(hand.cards().get(i).getValue());
-        if (compareValue != 0) {
-          return compareValue;
-        }
-      }
-      return 0;
+      return IntStream.range(0, this.cards().size())
+          .map(i -> this.cards.get(i).getValue().compareTo(hand.cards().get(i).getValue()))
+          .filter(i -> i != 0)
+          .findFirst()
+          .orElse(0);
     }
     return RANK.get(this.getType()).compareTo(RANK.get(hand.getType()));
   }
@@ -65,7 +64,7 @@ record Hand(List<Card> cards) implements Comparable<Hand> {
         .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(c -> 1)));
   }
 
-  private static <T, E> T getKeysByValueT(Map<T, E> map, E value) {
+  private static <T, E> T getKeysByValue(Map<T, E> map, E value) {
     return map.entrySet()
         .stream()
         .filter(entry -> Objects.equals(entry.getValue(), value))

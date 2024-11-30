@@ -16,15 +16,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    // https://jgrapht.org/
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
     implementation 'org.jgrapht:jgrapht-ext:1.5.2'
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
 
-    //https://github.com/dpaukov/combinatoricslib3
-    implementation 'com.github.dpaukov:combinatoricslib3:3.3.3'
+    // https://github.com/dpaukov/combinatoricslib3
+    implementation 'com.github.dpaukov:combinatoricslib3:3.4.0'
 }
 
 test {
@@ -37,5 +38,5 @@ test {
 }
 
 wrapper {
-    gradleVersion = "8.3"
+    setGradleVersion("8.11.1")
 }

@@ -8,3 +8,5 @@ https://adventofcode.com/
 #### [2022](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2022)
 
 #### [2023](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2023)
+
+#### [2024](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2024)

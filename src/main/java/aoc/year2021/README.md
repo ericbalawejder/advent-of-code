@@ -93,7 +93,7 @@ complete the delimiter sequence. Compute a score based on the value of each deli
 
 
 #### [Day 11](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2021/day11)
-Apply rules to a 2-D array of values. Similar to a bingo card from day 4. I used the same `Coordinate`
+Apply rules to a 2-D array of values. Similar to a bingo cardOne from day 4. I used the same `Coordinate`
 `record` from day 9 to model the grid of octopus energy levels. For part 1, apply 100 transformations
 of the grid and count how many times a 9 flips over to zero, called a flash. For part 2, find on what
 number transformation the grid becomes synchronized, defined as all zeros.

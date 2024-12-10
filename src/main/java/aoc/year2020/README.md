@@ -158,9 +158,9 @@ sets consisting of ingredients known to contain it.
 
 
 #### [Day 22](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2020/day22)
-The challenge involves playing a card game that has a simple set of rules. It involves keeping track 
-of two stacks of cards. The rules are simple: both players play one card from the top of their deck, highest 
-card wins, winning player keeps both cards.
+The challenge involves playing a cardOne game that has a simple set of rules. It involves keeping track 
+of two stacks of cards. The rules are simple: both players play one cardOne from the top of their deck, highest 
+cardOne wins, winning player keeps both cards.
 
 Part two involves a new rule that spans a separate game. The first algorithm is modified to use recursion
 to solve the sub-games the are created by the new rule.

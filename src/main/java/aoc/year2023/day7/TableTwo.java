@@ -9,26 +9,26 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-class Table {
+public class TableTwo {
 
   public static void main(String... args) {
     final String path = "src/main/java/aoc/year2023/day7/camel-cards.txt";
-    final List<CamelCard> camelCards = importCamelCards(path);
+    final List<CamelCardTwo> camelCards = importCamelCards(path);
     final int totalWinnings = computeWinnings(camelCards);
     System.out.println(totalWinnings);
   }
 
-  static int computeWinnings(List<CamelCard> camelCards) {
+  static int computeWinnings(List<CamelCardTwo> camelCards) {
     return IntStream.rangeClosed(1, camelCards.size())
         .map(rank -> rank * camelCards.get(rank - 1).bid())
         .sum();
   }
 
-  private static List<CamelCard> importCamelCards(String path) {
+  private static List<CamelCardTwo> importCamelCards(String path) {
     try (Stream<String> stream = Files.lines(Paths.get(path))) {
       return stream.map(line -> line.split(" "))
-          .map(a -> new CamelCard(new Hand(getCards(a[0])), Integer.parseInt(a[1])))
-          .sorted(Comparator.comparing(CamelCard::hand))
+          .map(a -> new CamelCardTwo(new HandTwo(getCards(a[0])), Integer.parseInt(a[1])))
+          .sorted(Comparator.comparing(CamelCardTwo::hand))
           .toList();
     } catch (IOException e) {
       e.printStackTrace();
@@ -36,10 +36,10 @@ class Table {
     }
   }
 
-  private static List<Card> getCards(String sequence) {
+  private static List<CardTwo> getCards(String sequence) {
     return sequence.chars()
         .mapToObj(c -> (char) c)
-        .map(Card::new)
+        .map(CardTwo::new)
         .toList();
   }
 

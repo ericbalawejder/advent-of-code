@@ -1,5 +1,6 @@
 package aoc.utils;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class MapUtils {
         .stream()
         .sorted(Map.Entry.comparingByValue())
         .map(e -> Map.entry(e.getKey(), e.getValue()))
-        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
   }
 
 }

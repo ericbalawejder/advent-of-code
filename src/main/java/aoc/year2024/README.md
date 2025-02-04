@@ -27,13 +27,14 @@ in a `Map`. A `LinkedHashMap` is not necessary and is only used to draw a nice p
 
 #### [Day 5](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2024/day5)
 
-Provided a set of ordering rules, determine if a list of numbers is in the correct order or not. For part two, if the 
-numbers are not in the correct order, reorder them to the correct order. I first tried to find a natural ordering based 
+Provided a set of ordering rules, determine if a list of numbers is in the correct order or not. For part two, if the
+numbers are not in the correct order, reorder them to the correct order. I first tried to find a natural ordering based
 on the rules but the rules produce a directed graph with cycles. I created a type `Rule(int x, int y)` for each rule and
-then used a `Map<K, Set<V>` for each rule x value and the set of y values. The rules produce a set of all permutations 
+then used a `Map<K, Set<V>` for each rule x value and the set of y values. The rules produce a set of all permutations
 for the list of page numbers. The natural ordering, used to sort the numbers, is based on the occurrence of each x value
-in the permutations of the list of numbers. The most frequent occurring x values are the first values in the list and 
+in the permutations of the list of numbers. The most frequent occurring x values are the first values in the list and
 the least occurring x values are the second to last in the list, the last value being its y counterpart.
+
 ```
 For page numbers: 75,47,61,53,29
 
@@ -59,5 +60,18 @@ Which match the rule subset and thus are in the correct order.
 
 53|29
 ```
+
 If a rule for a permutation does not exist, flip the permutation, then reorder the set of permutations and mutate the
 page numbers to match the rule set.
+
+#### [Day 6](https://github.com/ericbalawejder/advent-of-code/tree/main/src/main/java/aoc/year2024/day6)
+
+Provided a set of rules, navigate a grid with some obstacles. The grid is modeled with a `Map<Coordinate, Character>`
+where each place on the grid is a `Coordinate(int x, int y)` and a `Character` symbol. While navigating, place each
+visited `Coordinate` in a set and count the size of the set to get the total distinct positions before exiting the gird.
+
+For part two, we need to place an obstacle, omitting the starting position, at every place in the path we traversed in
+part one and check if the guard ever enters an infinite loop. Count the number of possible loops. We measure a loop with 
+a `Traversal(Coordinate coordinate, Direction direction)` type. If we ever enter the same `Coordinate` at the same
+`Direction`, we have crossed our tracks and created a loop. Count the loop occurrence and halt. The naive brute force
+approach currently runs in 15-16 minutes.
